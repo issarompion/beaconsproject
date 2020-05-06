@@ -12,7 +12,9 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "postinstall": "npm run build",
-    "serve": "ionic serve",
+    "serve": "npm run config && ionic serve",
+    "prepare:ios": "npm run config && ionic cordova prepare ios",
+    "prepare:android": "npm run config && ionic cordova prepare ios",
     "cy-test-ui": "cypress open",
     "cy-test": "cypress run"
   },
