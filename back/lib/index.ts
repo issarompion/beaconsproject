@@ -1,19 +1,26 @@
+import { config } from "dotenv"
+import { resolve } from "path"
+
+config({ path: resolve(__dirname, "../../../.env") })
+
 export interface Environnement {
     name: string;
     version: string;
     git: string;
+
     db_url: string;
-    db_port: number;
-    api_port: number,
-    api_url: string,
+    db_port: string;
     db_name: string,
+
+    api_port: string,
+    api_url: string,
+
     kafka_url: string,
-    kafka_port: number,
+    kafka_port: string,
     kafka_topic_auth: string,
     kafka_topic_beacon: string,
     kafka_topic_client: string,
     kafka_topic_content:string,
-    kafka_topic_documentation: string,
     kafka_topic_logger: string,
     kafka_request: string,
     kafka_response: string,
@@ -22,6 +29,7 @@ export interface Environnement {
     kafka_action_update: string,
     kafka_action_delete: string,
     kafka_action_create: string,
+
     jwt_key:string
 }
 
@@ -61,28 +69,34 @@ export interface IContent {
 }
 
 export const ENV: Environnement = {
-    name: 'Beacons manager',
-    version: '1.0',
-    git: 'https://gitlab.istic.univ-rennes1.fr/activiot/beaconsproject',
-    db_port: 27017,
-    db_url: 'mongodb://ec2-3-91-15-133.compute-1.amazonaws.com',
-    api_port: 3000,
-    db_name: 'activiot',
-    kafka_url: 'ec2-3-91-15-133.compute-1.amazonaws.com',
-    kafka_port: 32770,
-    kafka_topic_auth: 'auth',
-    kafka_topic_beacon: 'beacon',
-    kafka_topic_client: 'client',
-    kafka_topic_content: 'content',
-    kafka_topic_documentation: 'doc',
-    kafka_topic_logger: 'logger',
-    kafka_request: 'req',
-    kafka_response: 'res',
-    kafka_action_list: 'list',
-    kafka_action_read: 'read',
-    kafka_action_update: 'update',
-    kafka_action_delete: 'delete',
-    kafka_action_create: 'create',
-    jwt_key:'activkey',
-    api_url: 'ec2-3-91-15-133.compute-1.amazonaws.com'
+    name: process.env.PROJECT_NAME!,
+    version: process.env.PROJECT_VERSION!,
+    git: process.env.GIT_URL!,
+
+    db_port: process.env.DB_PORT!,
+    db_url: process.env.DB_URL!,
+    db_name: process.env.DB_NAME!,
+
+    api_port: process.env.API_PORT!,
+    api_url: process.env.API_URL!,
+
+    kafka_url: process.env.KAFKA_URL!,
+    kafka_port: process.env.KAFKA_PORT!,
+    kafka_topic_auth: process.env.KAFKA_TOPIC_AUTH!,
+    kafka_topic_beacon: process.env.KAFKA_TOPIC_BEACON!,
+    kafka_topic_client: process.env.KAFKA_TOPIC_CLIENT!,
+    kafka_topic_content: process.env.KAFKA_TOPIC_CONTENT!,
+    kafka_topic_logger: process.env.KAFKA_TOPIC_LOGGER!,
+    kafka_request: process.env.KAFKA_REQUEST!,
+    kafka_response: process.env.KAFKA_RESPONSE!,
+    kafka_action_list: process.env.KAFKA_ACTION_LIST!,
+    kafka_action_read: process.env.KAFKA_ACTION_READ!,
+    kafka_action_update: process.env.KAFKA_ACTION_UPDATE!,
+    kafka_action_delete: process.env.KAFKA_ACTION_DELETE!,
+    kafka_action_create: process.env.KAFKA_ACTION_CREATE!,
+
+    jwt_key:process.env.JWT_KEY!,
+
 };
+
+console.log(process.env.GIT_URL)

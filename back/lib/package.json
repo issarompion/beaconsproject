@@ -19,5 +19,10 @@
     "@types/node": "^13.1.8",
     "typescript": "^3.7.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@types/find-config": "^1.0.0",
+    "dotenv": "^8.2.0",
+    "find-config": "^1.0.0",
+    "path": "^0.12.7"
+  }
 }
