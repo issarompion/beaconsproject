@@ -25,13 +25,13 @@ setEnv(envConfigFile,targetPath);
 setEnv(envProdConfigFile,targetProdPath)
 
 function setEnv(envConfigFile,targetPath){
-  console.log(colors.magenta('The file `environment.ts` will be written with the following content: \n'));
+  console.log(colors.magenta(`The file ${targetPath} will be written with the following content: \n`));
   console.log(colors.grey(envConfigFile));
   fs.writeFile(targetPath, envConfigFile, function (err) {
      if (err) {
          throw console.error(err);
      } else {
-         console.log(colors.magenta(`Angular environment.ts file generated correctly at ${targetPath} \n`));
+         console.log(colors.magenta(`Angular environment file generated correctly at ${targetPath} \n`));
      }
   });
 }
