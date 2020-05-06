@@ -98,5 +98,3 @@ export const ENV: Environnement = {
     jwt_key:process.env.JWT_KEY!,
 
 };
-
-console.log(process.env.GIT_URL)
