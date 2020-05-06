@@ -18,42 +18,42 @@ export class HttpService {
   }
 
 getClients(): Observable<ClientsResponse> {
-    return this.http.get<ClientsResponse>(environment.ip + '/clients',httpOptions).pipe(
+    return this.http.get<ClientsResponse>(environment.api_url + '/clients',httpOptions).pipe(
       retry(1),
       catchError(this.handleError)
     );
 }
 
 getClient(clientId: string): Observable<ClientResponse> {
-return this.http.get<ClientResponse>(`${environment.ip}/clients/${clientId}`,httpOptions).pipe(
+return this.http.get<ClientResponse>(`${environment.api_url}/clients/${clientId}`,httpOptions).pipe(
   retry(1),
   catchError(this.handleError)
 );
 }
 
 getBeacons(clientId: string): Observable<BeaconsResponse> {
-  return this.http.get<BeaconsResponse>(`${environment.ip}/clients/${clientId}/beacons`,httpOptions).pipe(
+  return this.http.get<BeaconsResponse>(`${environment.api_url}/clients/${clientId}/beacons`,httpOptions).pipe(
     retry(1),
     catchError(this.handleError)
   );
 }
 
 getBeacon(clientId: string,beaconId:string): Observable<BeaconResponse> {
-return this.http.get<BeaconResponse>(`${environment.ip}/clients/${clientId}/beacons/${beaconId}`,httpOptions).pipe(
+return this.http.get<BeaconResponse>(`${environment.api_url}/clients/${clientId}/beacons/${beaconId}`,httpOptions).pipe(
   retry(1),
   catchError(this.handleError)
 );
 }
 
 getContents(clientId: string,beaconId:string): Observable<ContentsResponse> {
-  return this.http.get<ContentsResponse>(`${environment.ip}/clients/${clientId}/beacons/${beaconId}/contents`,httpOptions).pipe(
+  return this.http.get<ContentsResponse>(`${environment.api_url}/clients/${clientId}/beacons/${beaconId}/contents`,httpOptions).pipe(
     retry(1),
     catchError(this.handleError)
   );
 }
 
 getContent(clientId: string,beaconId:string,contentId:string): Observable<ContentResponse> {
-return this.http.get<ContentResponse>(`${environment.ip}/clients/${clientId}/beacons/${beaconId}/contents/${contentId}`,httpOptions).pipe(
+return this.http.get<ContentResponse>(`${environment.api_url}/clients/${clientId}/beacons/${beaconId}/contents/${contentId}`,httpOptions).pipe(
   retry(1),
   catchError(this.handleError)
 );

@@ -11,13 +11,13 @@ const targetProdPath = './src/environments/environment.prod.ts';
 
 const envConfigFile = `export const environment = {
   production: false,
-  api_url:'${process.env.API_URL}:${process.env.API_PORT}'
+  api_url:'http://${process.env.API_URL}:${process.env.API_PORT}'
 };
 `;
 
 const envProdConfigFile = `export const environment = {
   production: true,
-  api_url:'${process.env.API_URL}:${process.env.API_PORT}'
+  api_url:'http://${process.env.API_URL}:${process.env.API_PORT}'
 };
 `;
 
