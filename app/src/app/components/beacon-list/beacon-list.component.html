@@ -1,9 +1,0 @@
-<ion-card *ngIf="this.beacons.length > 0">
-    <ion-card-content *ngFor="let beacon of this.beacons">
-        <ion-label style="text-align: center; line-height: 45px;">{{beacon.name}}</ion-label>
-                    <ion-button fill="clear" class="ion-float-right" [routerLink]="['/beacon/', beacon.id_beacon]">
-                        <ion-icon slot="icon-only" color="dark" name="arrow-forward">
-                        </ion-icon>
-                    </ion-button>
-    </ion-card-content>
-</ion-card>
