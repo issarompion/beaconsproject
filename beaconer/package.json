@@ -15,8 +15,8 @@
     "serve": "npm run config && ionic serve",
     "prepare:ios": "npm run config && ionic cordova prepare ios",
     "prepare:android": "npm run config && ionic cordova prepare ios",
-    "cy-test-ui": "cypress open",
-    "cy-test": "cypress run"
+    "cy-test-ui": "node_modules/.bin/cypress open",
+    "cy-test": "node_modules/.bin/cypress run"
   },
   "private": true,
   "dependencies": {

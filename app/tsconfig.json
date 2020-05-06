@@ -17,8 +17,11 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "types": ["cypress"]
   },
+  "include": ["../../node_modules/cypress",
+    "cypress/*/*.ts"],
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
     "strictInjectionParameters": true
