@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {Platform} from '@ionic/angular';
 import {IBeacon, IBeaconDelegate, IBeaconPluginResult, BeaconRegion} from '@ionic-native/ibeacon/ngx';
 import {Subject} from 'rxjs';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +39,7 @@ initialise(uuid:string): Promise<boolean> {
               }
           );
           this.iBeacon.startRangingBeaconsInRegion(
-              this.iBeacon.BeaconRegion('activiot', uuid))
+              this.iBeacon.BeaconRegion(environment.beacon_identifier, uuid))
               .then(() => {
               resolve(true);
           });
@@ -46,8 +47,8 @@ initialise(uuid:string): Promise<boolean> {
     }));
 }
 
-stopRanging(): Promise<void> {
-  return this.iBeacon.stopRangingBeaconsInRegion(this.iBeacon.BeaconRegion('thib', '12345678-9101-1121-3141-516171819203'));
+stopRanging(uuid): Promise<void> {
+  return this.iBeacon.stopRangingBeaconsInRegion(this.iBeacon.BeaconRegion(environment.beacon_identifier, uuid));
 }
 
 }

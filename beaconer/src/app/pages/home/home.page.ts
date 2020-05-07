@@ -16,6 +16,7 @@ import {Subscription} from 'rxjs';
 export class HomePage implements OnInit {
   beacons : IBeacon[]
   id_client:string;
+  uuid:string;
   zone: NgZone;
   nearest_beacon_id : string
   subscription:Subscription
@@ -42,8 +43,8 @@ export class HomePage implements OnInit {
     this.beacons = beacons
     if (this.platform.is('cordova') && Array.isArray(this.beacons) && this.beacons.length) {
         this.zone = new NgZone({ enableLongStackTrace: false });
-        let uuid = this.beacons[0].uuid
-        this.beaconService.initialise(uuid).then(() => {
+        this.uuid = this.beacons[0].uuid
+        this.beaconService.initialise(this.uuid).then(() => {
             this.subscription = this.beaconService.currentBeacons.subscribe(data=>{
               this.zone.run(() => {
                   let beacon : IBeacon = this.get_beacon(this.get_nearest_beacon(data.beacons))
@@ -119,7 +120,7 @@ export class HomePage implements OnInit {
 
   stopRanging(){
     if (this.platform.is('cordova')) {
-      this.beaconService.stopRanging();
+      this.beaconService.stopRanging(this.uuid);
       this.subscription.unsubscribe()
     }
   }

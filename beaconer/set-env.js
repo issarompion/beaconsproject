@@ -12,13 +12,15 @@ const targetConfigXmlPath = './config.xml';
 
 const envConfigFile = `export const environment = {
   production: false,
-  api_url:'http://${process.env.API_URL}:${process.env.API_PORT}'
+  api_url:'http://${process.env.API_URL}:${process.env.API_PORT}',
+  beacon_identifier:'${process.env.BEACON_IDENTIFIER}'
 };
 `;
 
 const envProdConfigFile = `export const environment = {
   production: true,
-  api_url:'http://${process.env.API_URL}:${process.env.API_PORT}'
+  api_url:'http://${process.env.API_URL}:${process.env.API_PORT}',
+  beacon_identifier:'${process.env.BEACON_IDENTIFIER}'
 };
 `;
 
