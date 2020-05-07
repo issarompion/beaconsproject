@@ -1,8 +1,7 @@
-.idea
 node_modules
 dist
 .env
-.idea/*
 package-lock.json
 environment.ts
 environment.prod.ts
+config.xml
