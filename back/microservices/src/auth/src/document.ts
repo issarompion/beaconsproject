@@ -9,11 +9,11 @@ export interface IUserDocument extends Document {
   id_client: string,
   tokens : string[]
   // methods
-  generateAuthToken(): string
+  // generateAuthToken(): string
   convert():IUser
 };
 
 export interface IUserModel extends Model<IUserDocument> {
 // statics
- findByCredentials(email:string, password:string): IUserDocument;
+//  findByCredentials(email:string, password:string): IUserDocument;
 }

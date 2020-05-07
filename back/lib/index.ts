@@ -29,6 +29,8 @@ export interface Environnement {
     kafka_action_update: string,
     kafka_action_delete: string,
     kafka_action_create: string,
+    kafka_action_login: string,
+    kafka_action_logout: string,
 
     jwt_key:string
 }
@@ -94,6 +96,8 @@ export const ENV: Environnement = {
     kafka_action_update: process.env.KAFKA_ACTION_UPDATE!,
     kafka_action_delete: process.env.KAFKA_ACTION_DELETE!,
     kafka_action_create: process.env.KAFKA_ACTION_CREATE!,
+    kafka_action_login: process.env.KAFKA_ACTION_LOGIN!,
+    kafka_action_logout: process.env.KAFKA_ACTION_LOGOUT!,
 
     jwt_key:process.env.JWT_KEY!,
 

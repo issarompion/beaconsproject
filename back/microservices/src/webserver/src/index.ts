@@ -5,8 +5,8 @@ import {clientsRouter} from './routes/clients'
 import {beaconsRouter} from './routes/beacons'
 import {contentsRouter} from './routes/contents'
 import {usersRouter} from './routes/users'
-import {kafkaClient,ResourceMessage,fetchLastOffsets} from 'msconnector';
-import {ConsumerOptions, Message} from 'kafka-node';
+import {kafkaClient,ResourceMessage,AuthMessage,fetchLastOffsets} from 'msconnector';
+import {ConsumerOptions, Message, ConsumerGroupStream} from 'kafka-node';
 const kafka = require('kafka-node');
 
 export const map: any = {};
@@ -36,13 +36,17 @@ const topics: string[] = [
 ];
 authConsumer.on('message', async (message: Message) => {
     fetchLastOffsets(topics).then((myOffsets) => {
-        console.log('myoffsets', myOffsets);
         if (message.offset) {
-            console.log(message);
             const data: ResourceMessage = JSON.parse(message.value.toString());
             if (data.type === 'res') {
+                console.log('response',message);
+                console.log('myoffsets', myOffsets);
                 let response: Response = map[data.id];
-                response.status(data.status).send({value: data.value});
+                if((data as AuthMessage).token){
+                    response.status(data.status).send({value: data.value,token:(data as AuthMessage).token});
+                }else{
+                    response.status(data.status).send({value: data.value});
+                }
                 delete map[data.id];
             }
         }

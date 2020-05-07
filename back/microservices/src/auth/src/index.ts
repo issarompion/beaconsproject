@@ -1,138 +1,143 @@
-import {kafkaClient,AuthMessage} from 'msconnector';
+import {AuthMessage,kafkaClient,sendKafkaMessage, fetchLastOffsets} from "msconnector";
 const kafka = require('kafka-node')
-import {Message,ConsumerOptions} from "kafka-node";
+import {Producer,Message,ConsumerOptions} from "kafka-node";
 import {ENV} from 'lib';
-import {verify} from 'jsonwebtoken';
+import {verify,sign} from 'jsonwebtoken';
+import {compare} from 'bcryptjs';
 import {UserModel} from './User';
 import {IUserDocument} from './document'
-const consumerOptions: ConsumerOptions = {fromOffset: false};
+
+const producer: Producer = new Producer(kafkaClient, { requireAcks: 1 })
+
+const consumerOptions : ConsumerOptions = {fromOffset: false};
 const authConsumer = new kafka.Consumer(kafkaClient, [{ topic:'' + ENV.kafka_topic_auth,partitions:1}], consumerOptions);
-authConsumer.on('message', async (message: Message) => {
-    const data: AuthMessage  = JSON.parse(message.value.toString());
-    switch (data.type) {
-        case ('req'):
-            switch (data.action) {
-                case 'create':
-                    try {
-                        let user = new UserModel(data.value)
-                        await user.save()
-                        let token = await user.generateAuthToken()
-                        data.status = 200
-                        let msg = {
-                            type : 'res',
-                            value : token,
-                            action : data.action,
-                            id : data.id,
-                            status : data.status
-                        }
-                        //TODO : send kafka msg 
-                    } catch (error) {
-                        data.status = 400
-                        let msg = {
-                            type : 'res',
-                            value : error,
-                            action : data.action,
-                            id : data.id,
-                            status : data.status
-                        }
-                        //TODO : send kafka msg 
-                    }
-                    break;
-                case 'login':
-                    try {
-                        let user = await UserModel.findByCredentials(data.value.email,data.value.password)
-                        if (!user) {
-                            throw new Error('Login failed! Check authentication crentials')
-                        }
-                        let token = await user.generateAuthToken()
-                        data.status = 200
-                        let msg = {
-                            type : 'res',
-                            value : token,
-                            action : data.action,
-                            id : data.id,
-                            status : data.status
-                        }
-                        //TODO : send kafka msg 
-                    } catch (error) {
-                        data.status = 400
-                        let msg = {
-                            type : 'res',
-                            value : error,
-                            action : data.action,
-                            id : data.id,
-                            status : data.status
-                        }
-                        //TODO : send kafka msg 
-                    }
-                    break;
-                case 'read':
-                    auth(data,function(user:IUserDocument,token:string){
-                    data.status = 200
-                    let msg = {
-                            type : 'res',
-                            value : user.convert(),
-                            action : data.action,
-                            id : data.id,
-                            status : data.status
-                        }
-                    //TODO : send kafka msg 
-                    })
-                    break;
-                case 'logout':
-                    auth(data,async function(user:IUserDocument,token:string){
-                        try {
-                            user.tokens.splice(0, user.tokens.length)
-                            await user.save()
-                            data.status = 200
-                            let msg = {
-                                type : 'res',
-                                value : true,
-                                action : data.action,
-                                id : data.id,
-                                status : data.status
-                            }
-                            //TODO : send kafka msg 
-                        } catch (error) {
-                            data.status = 500
-                            let msg = {
-                                type : 'res',
-                                value : error,
-                                action : data.action,
-                                id : data.id,
-                                status : data.status
-                            }
-                            //TODO : send kafka msg 
-                        }
-                    })
-                    break;
-                default: break;
-            }
-            break;
-        default: break;
-    }
+authConsumer.on('message', (message: Message) => {
+    fetchLastOffsets(['' + ENV.kafka_topic_auth]).then(() => {
+        const data : AuthMessage  = JSON.parse(message.value.toString());
+        console.log(data);
+        switch (data.type) {
+
+            case ('req'):
+
+                switch (data.action) {
+
+                    case 'create':
+                        create(data).then(msg =>{
+                            sendKafkaMessage(producer, ENV.kafka_topic_auth, msg);
+                        });
+                        break;
+
+                    case 'login':
+                        login(data).then(msg =>{
+                            sendKafkaMessage(producer, ENV.kafka_topic_auth, msg);
+                        })
+
+                        break;
+
+                    case 'read':
+
+                        break;
+                    case 'logout':
+
+                        break;
+
+                    default: break;
+                }
+                break;
+            default: break;
+        }
+    });
 });
 
-
-async function auth(msg : any, next:any) {
-    const token : string = msg.token
-    const data : any = verify(token, ENV.jwt_key)
-    try {
-        const user = await UserModel.findOne({ _id: data._id, 'tokens.token': token })
-        if (!user) {
-            throw new Error('Not authorized to access this resource')
-        }
-        next(user,token)
-    } catch (error) {
-        let erorrmsg = {
-            type : 'res',
-            value : error,
-            action : msg.action,
-            id : msg.id,
-            status : 401
-        }
-        //TODO : send kafka msg 
-    }
-
-
+const create = (data: AuthMessage) : Promise<AuthMessage> =>{
+    return new Promise((res) => {
+      let  newUser = new UserModel(data.value)
+      newUser.save(function(err) {
+        if(err.status){
+            res({
+                type : 'res',
+                value : err.message,
+                action : data.action,
+                id : data.id,
+                token: data.token,
+                status : 404
+            })
+        }else{
+        generateAuthToken(newUser)
+        .then(token=>{
+            res({
+                type : 'res',
+                value : newUser.convert(),
+                action : data.action,
+                id : data.id,
+                token : token,
+                status : 200
+                })
+        })
+        }  
+      })
+    });
 }
+
+const login = (data: AuthMessage) : Promise<AuthMessage> =>{
+    return new Promise((res) => {
+        UserModel.findOne({email:data.value.email},function(err, user) {
+            if(err){
+                res({
+                    type : 'res',
+                    value : err.message,
+                    action : data.action,
+                    id : data.id,
+                    status : 404
+                })   
+            }else{
+                if(!user){
+                    res({
+                        type : 'res',
+                        value : 'Login failed! Check authentication email',
+                        action : data.action,
+                        id : data.id,
+                        status : 401
+                    })
+                }else{
+                    compare(data.value.password, user.password)
+                    .then(isPasswordMatch =>{
+                        if (!isPasswordMatch) {
+                            res({
+                                type : 'res',
+                                value : 'Login failed! Check authentication password',
+                                action : data.action,
+                                id : data.id,
+                                status : 401
+                            })
+                        }else{
+                            generateAuthToken(user)
+                            .then(token =>{
+                                res({
+                                    type : 'res',
+                                    value : user.convert(),
+                                    action : data.action,
+                                    id : data.id,
+                                    token : token,
+                                    status : 200
+                                })
+                            })
+                        }
+                })
+            }
+            }
+        })
+    })
+}
+
+const generateAuthToken = (user : any): Promise<string> =>{
+    return new Promise((res) => {
+        let token = sign({_id: user._id}, ENV.jwt_key)
+        user.tokens = user.tokens.concat({token})
+        user.save(function() {
+            res(token)
+        })
+    }) 
+}
+
+

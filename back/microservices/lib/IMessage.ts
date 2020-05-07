@@ -13,7 +13,7 @@ export interface ResourceMessage extends DefaultMessage {
 export interface AuthMessage extends DefaultMessage{
     action:string | 'login'|'logout'|'create'|'read',
     value: IUser|any,
-    token : string
+    token?:string
 }
 export interface BeaconMessage extends ResourceMessage{
     value: IBeacon|any
