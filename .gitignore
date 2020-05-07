@@ -4,4 +4,4 @@ dist
 package-lock.json
 environment.ts
 environment.prod.ts
-config.xml
+beaconer/config.xml
