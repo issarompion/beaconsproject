@@ -45,7 +45,6 @@ authConsumer.on('message', async (message: Message) => {
                 if((data as AuthMessage).token){
                     if(data.status === 200 && [ENV.kafka_action_create, ENV.kafka_action_login, ENV.kafka_action_read].indexOf(data.action) >= 0) {
                         request.currentUser = data.value
-                        console.log('request',request)
                     }
                     response.status(data.status).send({value: data.value,token:(data as AuthMessage).token});
                 }else{
