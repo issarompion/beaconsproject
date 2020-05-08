@@ -5,7 +5,6 @@ export const kafkaClient: KafkaClient = new KafkaClient(clientOptions);
 export const offset: Offset = new Offset(kafkaClient);
 export {sendKafkaMessage} from './utils/kafka'
 export {ResourceMessage,AuthMessage,BeaconMessage,ClientMessage,ContentMessage} from './IMessage'
-export {InitiateMongoServer,disconnectFromDB} from './helpers/mongo.helper'
 export interface MyOffset {
     topic: string;
     offset: number;
