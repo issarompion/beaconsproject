@@ -14,7 +14,6 @@ const authConsumer = new kafka.Consumer(kafkaClient, [{ topic:'' + ENV.kafka_top
 authConsumer.on('message', (message: Message) => {
     fetchLastOffsets(['' + ENV.kafka_topic_auth]).then(() => {
         const data : AuthMessage  = JSON.parse(message.value.toString());
-        console.log(data);
         switch (data.type) {
 
             case ('req'):

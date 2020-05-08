@@ -39,7 +39,6 @@ const UserSchema: Schema = new Schema({
 UserSchema.pre<IUserDocument>('save', function (next) {
     var user = this
     if (user.isModified('password')) {
-        console.log('usertools = ', `Running test at ${new Date().toISOString()}`)
         genSalt(10, function (err, salt) {
             if (err) { return next(err) }
             hash(user.password, salt, (err, hash) => {

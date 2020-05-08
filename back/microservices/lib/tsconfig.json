@@ -12,6 +12,6 @@
     "rootDir": "."
   },
   "include": [
-    "./*.ts", "../../env.ts","../../entities/interfaces.ts", "./utils/*.ts", "./helpers/*.ts"
+    "./*.ts", "../../env.ts","../../entities/interfaces.ts", "./utils/*.ts"
   ]
 }

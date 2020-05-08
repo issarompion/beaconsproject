@@ -39,8 +39,7 @@ authConsumer.on('message', async (message: Message) => {
         if (message.offset) {
             const data: ResourceMessage = JSON.parse(message.value.toString());
             if (data.type === 'res') {
-                console.log('response',message);
-                console.log('myoffsets', myOffsets);
+                console.log('myOffsets', myOffsets);
                 let response: Response = map[data.id];
                 if((data as AuthMessage).token){
                     response.status(data.status).send({value: data.value,token:(data as AuthMessage).token});
