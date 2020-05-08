@@ -9,5 +9,5 @@ export interface IUserDocument extends Document {
   id_client: string,
   tokens : string[]
   // methods
-  convert():IUser
+  convert(token?:string):IUser
 };

@@ -107,7 +107,7 @@ const create = (data: AuthMessage) : Promise<AuthMessage> =>{
         .then(token=>{
             res({
                 type : 'res',
-                value : newUser.convert(),
+                value : newUser.convert(token),
                 action : data.action,
                 id : data.id,
                 token : token,
@@ -155,7 +155,7 @@ const login = (data: AuthMessage) : Promise<AuthMessage> =>{
                             .then(token =>{
                                 res({
                                     type : 'res',
-                                    value : user.convert(),
+                                    value : user.convert(token),
                                     action : data.action,
                                     id : data.id,
                                     token : token,
@@ -214,7 +214,7 @@ const read = (data: AuthMessage) : Promise<AuthMessage> =>{
                     }else{
                         res({
                             type : 'res',
-                            value : user.convert(),
+                            value : user.convert(token),
                             action : data.action,
                             id : data.id,
                             token : token,

@@ -60,6 +60,7 @@ export interface IUser {
     email: string;
     password?: string;
     name: string;
+    token?: string;
     id_client?: string;
 }
 

@@ -42,13 +42,13 @@ authConsumer.on('message', async (message: Message) => {
                 console.log('myOffsets', myOffsets);
                 let response: Response = map[data.id].response;
                 let request : RequestWithCurrentUser = map[data.id].request;
-                if((data as AuthMessage).token){
-                    if(data.status === 200 && [ENV.kafka_action_create, ENV.kafka_action_login, ENV.kafka_action_read].indexOf(data.action) >= 0) {
+                if(data.status === 200){
+                    if((data as AuthMessage).token && [ENV.kafka_action_create, ENV.kafka_action_login, ENV.kafka_action_read].indexOf(data.action) >= 0) {
                         request.currentUser = data.value
                     }
-                    response.status(data.status).send({value: data.value,token:(data as AuthMessage).token});
-                }else{
                     response.status(data.status).send({value: data.value});
+                }else{
+                    response.status(data.status).send({error: data.value});
                 }
                 delete map[data.id];
             }

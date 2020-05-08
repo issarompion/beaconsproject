@@ -52,13 +52,24 @@ UserSchema.pre<IUserDocument>('save', function (next) {
     }
 })
 
-UserSchema.methods.convert = function() : IUser {
-    return {
-        id_user : this._id,
-        email : this.email,
-        name : this.name,
-        id_client : this.id_client
-      }
+UserSchema.methods.convert = function(token = undefined) : IUser {
+    if(token){
+        return {
+            id_user : this._id,
+            email : this.email,
+            name : this.name,
+            id_client : this.id_client,
+            token : token
+        }
+    }else{
+        return {
+            id_user : this._id,
+            email : this.email,
+            name : this.name,
+            id_client : this.id_client
+          }
+    }
+
 }
 
 export const UserModel = model<IUserDocument>('user', UserSchema);
