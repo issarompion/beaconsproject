@@ -1,17 +1,18 @@
-import {IBeacon, IClient, IContent, IUser} from 'lib';
+import {IBeacon, IClient, IContent, IUser, Environnement} from 'lib';
+import {ENV} from "lib";
 
 export interface DefaultMessage {
-    type: string | 'req'|'res',
+    type: string,
     id : string,
     status : number
 }
 export interface ResourceMessage extends DefaultMessage {
-    action: string | 'create'|'update'|'read'|'delete' | 'list',
+    action: string,
     value : any
 }
 
 export interface AuthMessage extends DefaultMessage{
-    action:string | 'login'|'logout'|'create'|'read',
+    action:string,
     value: IUser|any,
     token?:string
 }

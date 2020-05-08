@@ -11,7 +11,7 @@ const producer: Producer = new Producer(kafkaClient, { requireAcks: 1 })
 
 router.get('/', async (request: Request, response: Response) => {
     let id : string = uniqid.default()
-    map[id] = response
+    map[id] = { response:response, request:request }
     const contentMsg: ContentMessage = { type: ENV.kafka_request, action: ENV.kafka_action_list, value: { id_client: request.params.clientId, id_beacon : request.params.beaconId }, id:id, status:0};
 
     sendKafkaMessage(producer, ENV.kafka_topic_content, contentMsg);
@@ -19,7 +19,7 @@ router.get('/', async (request: Request, response: Response) => {
 
 router.post('/', async (request: Request, response: Response) => {
     let id : string = uniqid.default()
-    map[id] = response
+    map[id] = { response:response, request:request }
     const currentBeacon: IContent = request.body;
     const contentMsg: ContentMessage = { type: ENV.kafka_request, action: ENV.kafka_action_create, value: currentBeacon , id:id, status:0};
 
@@ -28,7 +28,7 @@ router.post('/', async (request: Request, response: Response) => {
 
 router.get('/:contentId', async (request: Request, response: Response) => {
     let id : string = uniqid.default()
-    map[id] = response
+    map[id] = { response:response, request:request }
     const contentMsg: ContentMessage = { type: ENV.kafka_request, action: ENV.kafka_action_read, value: {id_client : request.params.clientId, id_beacon : request.params.beaconId, id_content :request.params.contentId }, id:id, status:0};
 
     sendKafkaMessage(producer, ENV.kafka_topic_content, contentMsg);
@@ -36,7 +36,7 @@ router.get('/:contentId', async (request: Request, response: Response) => {
 
 router.delete('/:contentId', async (request: Request, response: Response) => {
     let id : string = uniqid.default()
-    map[id] = response
+    map[id] = { response:response, request:request }
     const contentMsg: ContentMessage = { type: ENV.kafka_request, action: ENV.kafka_action_delete, value: { id_client: request.params.clientId, id_beacon : request.params.beaconId, id_content :request.params.contentId }, id:id, status:0};
 
     sendKafkaMessage(producer, ENV.kafka_topic_content, contentMsg);
@@ -44,7 +44,7 @@ router.delete('/:contentId', async (request: Request, response: Response) => {
 
 router.put('/:contentId', async (request: Request, response: Response) => {
     let id : string = uniqid.default()
-    map[id] = response
+    map[id] = { response:response, request:request }
     const currentContent: IContent = request.body;
     const contentMsg: ContentMessage = { type: ENV.kafka_request, action: ENV.kafka_action_update, value: currentContent, id:id, status:0};
 

@@ -11,7 +11,7 @@ const producer: Producer = new Producer(kafkaClient, { requireAcks: 1 })
 
 router.get('/', async (request: Request, response: Response) => {
     let id : string = uniqid.default()
-    map[id] = response
+    map[id] = { response:response, request:request }
     const ClientMsg: ClientMessage = { type: ENV.kafka_request, action: ENV.kafka_action_list, value:undefined, id:id, status:0};
 
     sendKafkaMessage(producer, ENV.kafka_topic_client, ClientMsg);
@@ -20,7 +20,7 @@ router.get('/', async (request: Request, response: Response) => {
 
 router.post('/', async (request: Request, response: Response) => {
     let id : string = uniqid.default()
-    map[id] = response
+    map[id] = { response:response, request:request }
     const currentClient: IClient = request.body;
     const ClientMsg: ClientMessage = { type: ENV.kafka_request, action: ENV.kafka_action_create, value: currentClient , id:id, status:0};
 
@@ -30,7 +30,7 @@ router.post('/', async (request: Request, response: Response) => {
 
 router.get('/:clientId', async (request: Request, response: Response) => {
     let id : string = uniqid.default()
-    map[id] = response
+    map[id] = { response:response, request:request }
     const ClientMsg: ClientMessage = { type: ENV.kafka_request, action: ENV.kafka_action_read, value: { id_client: request.params.clientId } , id:id, status:0};
 
     sendKafkaMessage(producer, ENV.kafka_topic_client, ClientMsg);
@@ -38,7 +38,7 @@ router.get('/:clientId', async (request: Request, response: Response) => {
 
 router.delete('/:clientId', async (request: Request, response: Response) => {
     let id : string = uniqid.default()
-    map[id] = response
+    map[id] = { response:response, request:request }
     const ClientMsg: ClientMessage = { type: ENV.kafka_request, action: ENV.kafka_action_delete, value: { id_client: request.params.clientId }, id:id, status:0};
 
     sendKafkaMessage(producer, ENV.kafka_topic_client, ClientMsg);
@@ -46,7 +46,7 @@ router.delete('/:clientId', async (request: Request, response: Response) => {
 
 router.put('/:clientId', async (request: Request, response: Response) => {
     let id : string = uniqid.default()
-    map[id] = response
+    map[id] = { response:response, request:request }
     const currentClient: IClient = request.body;
     const ClientMsg: ClientMessage = { type: ENV.kafka_request, action: ENV.kafka_action_update, value: currentClient, id:id, status:0};
 

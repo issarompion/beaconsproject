@@ -1,12 +1,12 @@
 import {app} from "./express.helper";
-import {ENV} from "lib";
-import {Response} from "express";
+import {ENV,IUser} from "lib";
+import {Response,Request} from "express";
 import {clientsRouter} from './routes/clients'
 import {beaconsRouter} from './routes/beacons'
 import {contentsRouter} from './routes/contents'
 import {usersRouter} from './routes/users'
 import {kafkaClient,ResourceMessage,AuthMessage,fetchLastOffsets} from 'msconnector';
-import {ConsumerOptions, Message, ConsumerGroupStream} from 'kafka-node';
+import {ConsumerOptions, Message} from 'kafka-node';
 const kafka = require('kafka-node');
 
 export const map: any = {};
@@ -40,8 +40,13 @@ authConsumer.on('message', async (message: Message) => {
             const data: ResourceMessage = JSON.parse(message.value.toString());
             if (data.type === 'res') {
                 console.log('myOffsets', myOffsets);
-                let response: Response = map[data.id];
+                let response: Response = map[data.id].response;
+                let request : RequestWithCurrentUser = map[data.id].request;
                 if((data as AuthMessage).token){
+                    if(data.status === 200 && [ENV.kafka_action_create, ENV.kafka_action_login, ENV.kafka_action_read].indexOf(data.action) >= 0) {
+                        request.currentUser = data.value
+                        console.log('request',request)
+                    }
                     response.status(data.status).send({value: data.value,token:(data as AuthMessage).token});
                 }else{
                     response.status(data.status).send({value: data.value});
@@ -51,3 +56,8 @@ authConsumer.on('message', async (message: Message) => {
         }
     });
 });
+
+
+interface RequestWithCurrentUser extends Request {
+    currentUser?: IUser;
+}
