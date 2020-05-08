@@ -1,11 +1,12 @@
-import {IUserDocument,IUserModel} from './document';
-import {ENV} from 'lib';
-import {InitiateMongoServer} from 'msconnector';
-import {Schema, model} from 'mongoose';
-import {compare,hash,genSalt} from 'bcryptjs';
-import {IUser} from 'lib';
+import {IUserDocument} from './document';
+import {ENV,IUser} from 'lib';
+import {Schema, model,connect} from 'mongoose';
+import {hash,genSalt} from 'bcryptjs';
 
-InitiateMongoServer(ENV.db_url+':'+ENV.db_port+'/'+ENV.db_name)
+const url = ENV.db_url+':'+ENV.db_port+'/'+ENV.db_name
+connect(url,{useUnifiedTopology: true, useNewUrlParser: true,})
+.then(() => console.log('DB Connected!'))
+.catch(err => {console.log(`DB Connection Error:${err.message}`);});
 
 const UserSchema: Schema = new Schema({
     name: {
@@ -35,48 +36,30 @@ const UserSchema: Schema = new Schema({
     }]
 });
 
-UserSchema.pre("save", function (this:IUserDocument,next:any) {
-    // Hash the password before saving the user model
-    const user = this
+UserSchema.pre<IUserDocument>('save', function (next) {
+    var user = this
     if (user.isModified('password')) {
-        hash(user.password, 8, function(error:any, hash:any): void {
-            if (error) return next({status:true,message:error.message});
-             user.password = hash;
-            next({status:false});
-        });
+        console.log('usertools = ', `Running test at ${new Date().toISOString()}`)
+        genSalt(10, function (err, salt) {
+            if (err) { return next(err) }
+            hash(user.password, salt, (err, hash) => {
+                if (err) { return next(err) }
+                user.password = hash
+                return next()
+            })
+        })
+    }else{
+        return next()
     }
-});
+})
 
 UserSchema.methods.convert = function() : IUser {
     return {
         id_user : this._id,
         email : this.email,
         name : this.name,
-        password : this.password,
         id_client : this.id_client
       }
 }
 
-// UserSchema.methods.generateAuthToken = async function() : Promise<string> {
-//     // Generate an auth token for the user
-//     const user = this
-//     const token = sign({_id: user._id}, ENV.jwt_key)
-//     user.tokens = user.tokens.concat({token})
-//     await user.save()
-//     return token
-// }
-
-// UserSchema.statics.findByCredentials = async function (email:string, password:string):Promise<IUserDocument>{
-//     // Search for a user by email and password.
-//     const user = await UserModel.findOne({email})
-//     if (!user) {
-//         throw new Error('Invalid login credentials')
-//     }
-//     const isPasswordMatch = await compare(password, user.password)
-//     if (!isPasswordMatch) {
-//         throw new Error('Invalid login credentials')
-//     }
-//     return user
-// }
-
-export const UserModel = model<IUserDocument, IUserModel>('user', UserSchema);
+export const UserModel = model<IUserDocument>('user', UserSchema);

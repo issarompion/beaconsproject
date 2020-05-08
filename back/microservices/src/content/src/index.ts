@@ -1,8 +1,7 @@
 import {ContentMessage,kafkaClient,sendKafkaMessage, fetchLastOffsets} from "msconnector";
 const kafka = require('kafka-node')
 import {Producer,Message,ConsumerOptions} from "kafka-node";
-import {ENV} from "lib";
-import {IContent} from "lib";
+import {ENV,IContent} from "lib";
 import {ContentModel} from "./Content";
 import {IContentDocument} from './document';
 

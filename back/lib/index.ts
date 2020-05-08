@@ -58,7 +58,7 @@ export interface IClient {
 export interface IUser {
     id_user: string;
     email: string;
-    password: string;
+    password?: string;
     name: string;
     id_client?: string;
 }
