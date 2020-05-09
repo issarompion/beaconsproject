@@ -1,4 +1,4 @@
-import {IBeacon,IClient,IContent} from './interfaces';
+import {IBeacon,IClient,IContent,IUser} from './interfaces';
 export interface ClientsResponse {
     value: IClient[];
 }
@@ -16,5 +16,11 @@ export interface ContentsResponse {
 }
 export interface ContentResponse {
     value: IContent;
+}
+export interface UsersResponse {
+    value: IUser[];
+}
+export interface UserResponse {
+    value: IUser;
 }
 

@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpRequest, HttpResponse, HttpHandler, HttpEvent, HttpInterceptor, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
-
-import { IUser } from '../models/interfaces';
+import { IUser, IClient } from '../models/interfaces';
 
 const users: IUser[] = [{ id_user: '1', email :'test@gmail.com', name: 'test', password: 'test', id_client: 'Test' }];
+const clients: IClient[] = [{id_client: '1',name: "ESIR",url:"https://esir.univ-rennes1.fr",img:"https://esir.univ-rennes1.fr/sites/esir.univ-rennes1.fr/files/esir_0.png",lat:0,lng:1}]
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
@@ -25,6 +25,10 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     return authenticate();
                 case url.endsWith('/users') && method === 'GET':
                     return getUsers();
+                case url.endsWith('/clients') && method === 'GET':
+                    return getClients();
+                case url.endsWith('/users') && method === 'POST':
+                    return create();
                 default:
                     // pass through any requests not handled above
                     return next.handle(request);
@@ -53,6 +57,33 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         function getUsers() {
             if (!isLoggedIn()) return unauthorized();
             return ok({ value : users });
+        }
+
+        function getClients(){
+            return ok({
+                value : clients
+            })
+        }
+
+        function create(){
+            const user = body;
+            const copy = users.find(x => x.email === body.email)
+            if(copy){
+                return error({
+                    value: body.email + ' already exists'
+                })
+            }else{
+                users.push(user)
+                return ok({
+                    value : {
+                        id_user: user.id_user,
+                        email : user.email,
+                        id_client : user.id_client,
+                        name: user.name,
+                        token: 'fake-jwt-token'
+                    }
+                })
+            }
         }
 
         // helper functions

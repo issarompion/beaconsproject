@@ -1,9 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpHeaders,HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { IUser } from '../models/interfaces';
+import { UserResponse } from '../models/responses'
+
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json'})
+};
 
 
 @Injectable({
@@ -23,12 +28,12 @@ export class AuthService {
   }
 
 login(email: string, password: string) {
-    return this.http.post<any>(`${environment.api_url}/users/login`, { email, password })
-        .pipe(map(data => {
+    return this.http.post<UserResponse>(`${environment.api_url}/users/login`, { email, password },httpOptions)
+        .pipe(map(cu => {
             // store user details and jwt token in local storage to keep user logged in between page refreshes
-            localStorage.setItem('currentUser', JSON.stringify(data.value));
-            this.currentUserSubject.next(data.value);
-            return data;
+            localStorage.setItem('currentUser', JSON.stringify(cu.value));
+            this.currentUserSubject.next(cu.value);
+            return cu;
         }));
 }
 
@@ -37,4 +42,15 @@ logout() {
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
 }
+
+create(user : IUser){
+  return this.http.post<UserResponse>(`${environment.api_url}/users`, user, httpOptions )
+  .pipe(map(cu => {
+      // store user details and jwt token in local storage to keep user logged in between page refreshes
+      localStorage.setItem('currentUser', JSON.stringify(cu.value));
+      this.currentUserSubject.next(cu.value);
+      return cu;
+  }));
+}
+
 }
