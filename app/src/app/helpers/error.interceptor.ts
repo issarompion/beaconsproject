@@ -16,7 +16,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                 setTimeout(function(){ location.reload(true) }, 2000);
             }
 
-            const error = err.error.value || err.statusText;
+            const error = err.error || err.statusText;
             return throwError(error);
         }))
     }

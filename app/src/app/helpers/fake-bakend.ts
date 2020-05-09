@@ -44,44 +44,36 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 value:'email or password is incorrect'
             });
             return ok({
-                value : {
                     id_user: user.id_user,
                     email : user.email,
                     id_client : user.id_client,
                     name: user.name,
                     token: 'fake-jwt-token'
-                }
             })
         }
 
         function getUsers() {
             if (!isLoggedIn()) return unauthorized();
-            return ok({ value : users });
+            return ok(users);
         }
 
         function getClients(){
-            return ok({
-                value : clients
-            })
+            return ok(clients)
         }
 
         function create(){
             const user = body;
             const copy = users.find(x => x.email === body.email)
             if(copy){
-                return error({
-                    value: body.email + ' already exists'
-                })
+                return error(body.email + ' already exists')
             }else{
                 users.push(user)
                 return ok({
-                    value : {
                         id_user: user.id_user,
                         email : user.email,
                         id_client : user.id_client,
                         name: user.name,
                         token: 'fake-jwt-token'
-                    }
                 })
             }
         }
@@ -97,9 +89,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }
 
         function unauthorized() {
-            return throwError({ status: 401, error: {
-                value : 'Unauthorised'}
-            });
+            return throwError({ status: 401, error: 'Unauthorised'});
         }
 
         function isLoggedIn() {

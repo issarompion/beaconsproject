@@ -4,7 +4,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { IUser } from '../models/interfaces';
-import { UserResponse } from '../models/responses'
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json'})
@@ -28,12 +27,12 @@ export class AuthService {
   }
 
 login(email: string, password: string) {
-    return this.http.post<UserResponse>(`${environment.api_url}/users/login`, { email, password },httpOptions)
-        .pipe(map(cu => {
+    return this.http.post<IUser>(`${environment.api_url}/users/login`, { email, password },httpOptions)
+        .pipe(map(user => {
             // store user details and jwt token in local storage to keep user logged in between page refreshes
-            localStorage.setItem('currentUser', JSON.stringify(cu.value));
-            this.currentUserSubject.next(cu.value);
-            return cu;
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            this.currentUserSubject.next(user);
+            return user;
         }));
 }
 
@@ -44,12 +43,12 @@ logout() {
 }
 
 create(user : IUser){
-  return this.http.post<UserResponse>(`${environment.api_url}/users`, user, httpOptions )
-  .pipe(map(cu => {
+  return this.http.post<IUser>(`${environment.api_url}/users`, user, httpOptions )
+  .pipe(map(user => {
       // store user details and jwt token in local storage to keep user logged in between page refreshes
-      localStorage.setItem('currentUser', JSON.stringify(cu.value));
-      this.currentUserSubject.next(cu.value);
-      return cu;
+      localStorage.setItem('currentUser', JSON.stringify(user));
+      this.currentUserSubject.next(user);
+      return user;
   }));
 }
 

@@ -4,7 +4,7 @@ import {BeaconService} from '../../services/beacon.service';
 import {HttpService} from '../../services/http.service';
 import {Platform} from '@ionic/angular';
 import {Beacon} from '@ionic-native/ibeacon/ngx';
-import {IBeacon} from '../../../models/interfaces';
+import {IBeacon} from '../../models/interfaces';
 import {ToastController} from "@ionic/angular";
 import {Subscription} from 'rxjs';
 
@@ -34,8 +34,8 @@ export class HomePage implements OnInit {
 
   ngOnInit() {
     this.httpService.getBeacons(this.id_client)
-    .subscribe(cb =>{
-      this.handleBeacon(cb.value)
+    .subscribe(beacons =>{
+      this.handleBeacon(beacons)
     })
   }
 

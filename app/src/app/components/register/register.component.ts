@@ -34,8 +34,8 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
     this.httpService.getClients()
-    .subscribe(cb =>{
-      this.clients = cb.value
+    .subscribe(clients =>{
+      this.clients = clients
     })
 
     this.registerForm = this.formBuilder.group({

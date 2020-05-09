@@ -45,7 +45,7 @@ authConsumer.on('message', async (message: Message) => {
                 if(data.status === 200 && (data as AuthMessage).token && [ENV.kafka_action_create, ENV.kafka_action_login, ENV.kafka_action_read].indexOf(data.action) >= 0) {
                     request.currentUser = data.value
                 }
-                response.status(data.status).send({value: data.value});
+                response.status(data.status).send(data.value);
                 delete map[data.id];
             }
         }

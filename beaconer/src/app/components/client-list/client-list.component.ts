@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../../services/http.service';
-import {IClient} from '../../../models/interfaces';
+import {IClient} from '../../models/interfaces';
 import { MenuController } from '@ionic/angular'
 
 @Component({
@@ -19,8 +19,8 @@ export class ClientListComponent implements OnInit {
 
   ngOnInit() {
     this.http.getClients()
-    .subscribe(cr =>{
-       this.clients = cr.value
+    .subscribe(clients =>{
+       this.clients = clients
     })
   }
 

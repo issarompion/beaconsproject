@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute } from '@angular/router';
 import {HttpService} from '../../services/http.service';
-import {IContent} from '../../../models/interfaces';
+import {IContent} from '../../models/interfaces';
 
 @Component({
   selector: 'app-content',
@@ -28,8 +28,8 @@ export class ContentPage implements OnInit {
 
   ngOnInit() {
     this.httpService.getContents(this.id_client,this.id_beacon)
-    .subscribe(cc =>{
-      this.contents = cc.value.sort((a, b) => (a.timestamp < b.timestamp) ? 1 : -1)
+    .subscribe(contents =>{
+      this.contents = contents.sort((a, b) => (a.timestamp < b.timestamp) ? 1 : -1)
       this.markdown = this.contents[this.index].content
     })
   }

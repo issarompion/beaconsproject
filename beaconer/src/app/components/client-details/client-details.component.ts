@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { HttpService } from '../../services/http.service';
-import {IClient} from '../../../models/interfaces';
+import {IClient} from '../../models/interfaces';
 
 @Component({
   selector: 'app-client-details',
@@ -19,8 +19,8 @@ export class ClientDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.http.getClient(this.id_client)
-    .subscribe(cr =>{
-       this.client = cr.value
+    .subscribe(client =>{
+       this.client = client
        this.done = true
     })
   }

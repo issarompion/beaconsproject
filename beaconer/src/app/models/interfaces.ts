@@ -22,3 +22,12 @@ export interface IContent {
     id_beacon? : string;
     timestamp? : number;
 }
+
+export interface IUser {
+    id_user?: string;
+    email?: string;
+    password?: string;
+    name?: string;
+    id_client?: string;
+    token?:string
+}

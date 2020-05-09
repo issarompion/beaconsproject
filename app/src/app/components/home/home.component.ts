@@ -18,9 +18,9 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
       this.loading = true;
       this.httpService.getUsers()
-      .subscribe(cu =>{
+      .subscribe(users =>{
         this.loading = false;
-        this.users = cu.value;
+        this.users = users;
       })
   }
 
