@@ -36,7 +36,9 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         function authenticate() {
             const { email, password } = body;
             const user = users.find(x => x.email === email && x.password === password);
-            if (!user) return error('email or password is incorrect');
+            if (!user) return error({
+                value:'email or password is incorrect'
+            });
             return ok({
                 value : {
                     id_user: user.id_user,
@@ -60,11 +62,13 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }
 
         function error(message) {
-            return throwError({ error: { message } });
+            return throwError({ error: message });
         }
 
         function unauthorized() {
-            return throwError({ status: 401, error: 'Unauthorised' });
+            return throwError({ status: 401, error: {
+                value : 'Unauthorised'}
+            });
         }
 
         function isLoggedIn() {
