@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { environment } from '../../../environments/environment'
 import {
   GoogleMaps,
   GoogleMap,
@@ -43,8 +44,8 @@ export class MapsComponent implements OnInit {
 
   loadMap() {
     Environment.setEnv({
-      API_KEY_FOR_BROWSER_RELEASE: 'AIzaSyCgREZH60qLyJJzL99JBKeZ2u3ZpVNeUEU',
-      API_KEY_FOR_BROWSER_DEBUG: 'AIzaSyCgREZH60qLyJJzL99JBKeZ2u3ZpVNeUEU'
+      API_KEY_FOR_BROWSER_RELEASE: environment.google_maps_browser_api_key,
+      API_KEY_FOR_BROWSER_DEBUG: environment.google_maps_browser_api_key
     });
     this.map = GoogleMaps.create('map_canvas', {
       camera: {
