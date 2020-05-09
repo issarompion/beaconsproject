@@ -83,7 +83,7 @@ export class HomePage implements OnInit {
         return res
       }else{
         if(res){
-          if(beacons[i].rssi<res.rssi){
+          if(beacons[i].rssi>res.rssi){
             res = beacons[i]
           }
         }else{
