@@ -17,13 +17,6 @@ export class HttpService {
   constructor(private http: HttpClient) {
   }
 
-getUsers(): Observable<IUser[]> {
-    return this.http.get<IUser[]>(environment.api_url + '/users',httpOptions).pipe(
-      retry(1),
-      catchError(this.handleError)
-    );
-}
-
 getClients(): Observable<IClient[]> {
     return this.http.get<IClient[]>(environment.api_url + '/clients',httpOptions).pipe(
       retry(1),
