@@ -4,13 +4,17 @@ import { Observable, of, throwError } from 'rxjs';
 import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
 import { IUser, IClient } from '../models/interfaces';
 
-const users: IUser[] = [{ id_user: '1', email :'test@gmail.com', name: 'test', password: 'test', id_client: 'Test' }];
-const clients: IClient[] = [{id_client: '1',name: "ESIR",url:"https://esir.univ-rennes1.fr",img:"https://esir.univ-rennes1.fr/sites/esir.univ-rennes1.fr/files/esir_0.png",lat:0,lng:1}]
+const users: IUser[] = [
+    { id_user: '1', email :'test@gmail.com', name: 'test', password: 'test', id_client: 'Test' }
+];
+const clients: IClient[] = [
+    {id_client: '1',name: "ESIR",url:"https://esir.univ-rennes1.fr",img:"https://esir.univ-rennes1.fr/sites/esir.univ-rennes1.fr/files/esir_0.png",lat:0,lng:1}
+]
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        const { url, method, headers, body } = request;
+        const { url, method, headers, body, params } = request;
 
         // wrap in delayed observable to simulate server api call
         return of(null)
@@ -40,9 +44,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         function authenticate() {
             const { email, password } = body;
             const user = users.find(x => x.email === email && x.password === password);
-            if (!user) return error({
-                value:'email or password is incorrect'
-            });
+            if (!user) return error('email or password is incorrect');
             return ok({
                     id_user: user.id_user,
                     email : user.email,
