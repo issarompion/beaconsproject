@@ -18,10 +18,9 @@
       "es2018",
       "dom"
     ],
-    "types": ["cypress"]
+    "types": []
   },
-  "include": ["../../node_modules/cypress",
-    "cypress/*/*.ts"],
+  "include": [],
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
     "strictInjectionParameters": true

@@ -4,8 +4,6 @@
   "description": "",
   "main": "./dist/index.js",
   "scripts": {
-    "test": "node_modules/.bin/cypress run",
-    "test-ui": "node_modules/.bin/cypress open",
     "dev": "concurrently -k -n \"Typescript,Node\" -p \"[{name}]\" -c \"blue,green\" \"tsc --watch\" \"nodemon -r dotenv/config dist/src/index.js\"",
     "start": "node_modules/.bin/tsc && node dist/index.js",
     "ci": "node_modules/.bin/start-server-and-test start http://localhost:3000/ test",

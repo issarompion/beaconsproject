@@ -7,15 +7,12 @@
     "lib": "lib"
   },
   "dependencies": {
-    "cypress": "^3.8.3",
     "bcryptjs": "^2.4.3"
   },
   "devDependencies": {
     "lib": "file:./lib"
   },
   "scripts": {
-    "test:beacon": "node_modules/.bin/cypress run --spec cypress/integration/beacons-spec.ts",
-    "test:client": "node_modules/.bin/cypress run --spec cypress/integration/clients-spec.ts",
     "install:lib": "cd lib && npm install && node_modules/.bin/tsc",
     "install:microservices": "cd microservices/lib && npm install && node_modules/.bin/tsc",
     "install:auth": "cd microservices/src/auth && npm install && node_modules/.bin/tsc",

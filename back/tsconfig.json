@@ -5,7 +5,7 @@
     "outDir": "dist",
     "target": "esnext",
     "strict": true,
-    "types": ["cypress"],
+    "types": [],
     "baseUrl": "./src",
     "resolveJsonModule": true,
     "paths": {
@@ -19,8 +19,6 @@
     }
   },
   "include": [
-    "src/**/*",
-    "cypress/**/*",
-    "src/documentation/**/*"
+    "src/**/*"
   ]
 }

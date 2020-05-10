@@ -1,8 +1,0 @@
-{
-    "baseUrl": "http://localhost:8100",
-    "video": false,
-    "chromeWebSecurity": false,
-    "cypress-watch-and-reload": {
-      "watch": "**/*.ts"
-    }
-  }
