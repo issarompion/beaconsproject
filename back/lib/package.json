@@ -1,24 +1,14 @@
 {
-  "name": "back",
-  "version": "1.0.0",
-  "description": "",
   "main": "./dist/index.js",
   "scripts": {
-    "dev": "concurrently -k -n \"Typescript,Node\" -p \"[{name}]\" -c \"blue,green\" \"tsc --watch\" \"nodemon -r dotenv/config dist/src/index.js\"",
-    "start": "node_modules/.bin/tsc && node dist/index.js",
-    "ci": "node_modules/.bin/start-server-and-test start http://localhost:3000/ test",
+    "start": "npm run build && node dist/index.js",
     "build": "node_modules/.bin/tsc"
   },
-  "_moduleAliasIgnoreWarning": true,
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "@types/node": "^13.1.8",
     "typescript": "^3.7.3"
   },
   "dependencies": {
-    "@types/find-config": "^1.0.0",
     "dotenv": "^8.2.0",
     "find-config": "^1.0.0",
     "path": "^0.12.7"

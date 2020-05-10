@@ -5,13 +5,13 @@
     "outDir": "dist",
     "target": "esnext",
     "strict": true,
-    "types": ["node"],
+    "types": ["node","express"],
     "baseUrl": "./",
     "resolveJsonModule": true,
     "composite": true,
     "rootDir": "."
   },
   "include": [
-    "./*.ts", "../../env.ts","../../entities/interfaces.ts", "./utils/*.ts"
+    "./*.ts", "./utils/*.ts"
   ]
 }

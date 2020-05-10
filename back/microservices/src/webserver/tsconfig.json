@@ -5,18 +5,9 @@
     "outDir": "dist",
     "target": "esnext",
     "strict": true,
-    "types": [],
+    "types": ["node","express","uniqid"],
     "baseUrl": ".",
     "resolveJsonModule": true,
-    "paths": {
-      "@constants/*": ["./../../constants/*"],
-      "@documentation/*": ["./../../documentation/*"],
-      "@entities/*": ["./../../entities/*"],
-      "@functions/*": ["./../../functions/*"],
-      "@helpers/*": ["./../../helpers/*"],
-      "@routes/*": ["./../../routes/*"],
-      "@src/*": ["./../../*"]
-    }
   },
   "include": [
     "src/**/*"

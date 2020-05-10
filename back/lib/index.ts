@@ -74,7 +74,7 @@ export interface IContent {
 export const ENV: Environnement = {
     name: process.env.PROJECT_NAME!,
     version: process.env.PROJECT_VERSION!,
-    git: process.env.GIT_URL!,
+    git: process.env.GIT!,
 
     db_port: process.env.DB_PORT!,
     db_url: process.env.DB_URL!,

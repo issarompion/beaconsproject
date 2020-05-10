@@ -1,17 +1,7 @@
 {
   "name": "back",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "directories": {
-    "lib": "lib"
-  },
-  "dependencies": {
-    "bcryptjs": "^2.4.3"
-  },
-  "devDependencies": {
-    "lib": "file:./lib"
-  },
+  "description": "Backend organized in microservices",
   "scripts": {
     "install:lib": "cd lib && npm install && node_modules/.bin/tsc",
     "install:microservices": "cd microservices/lib && npm install && node_modules/.bin/tsc",
@@ -32,7 +22,5 @@
     "clear:dist": "find . -name 'dist' -type d -prune -print -exec rm -rf '{}' \\;",
     "clear:package-lock": "find . -name 'package-lock.json' -delete",
     "clear:all": "npm run clear:modules && npm run clear:dist && npm run clear:package-lock"
-  },
-  "author": "activiot",
-  "license": "ISC"
+  }
 }

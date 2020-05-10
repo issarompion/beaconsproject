@@ -17,13 +17,14 @@ authConsumer.on('message', async (message: Message) => {
                     break;
 
                 case 'delete':
-
                     break;
+
                 case 'read':
                     break;
-                case 'update':
 
+                case 'update':
                     break;
+                    
                 default: break;
             }
             break;

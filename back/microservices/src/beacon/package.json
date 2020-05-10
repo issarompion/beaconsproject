@@ -1,15 +1,9 @@
 {
-  "name": "beacon",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "scripts": {
-    "start": "node_modules/.bin/tsc && node dist/index.js",
+    "start": "npm run build && node dist/index.js",
     "build": "node_modules/.bin/tsc"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "mongoose": "^5.8.7",
     "kafka-node": "^5.0.0",
@@ -17,8 +11,8 @@
     "msconnector": "file:../../lib"
   },
   "devDependencies": {
-    "@types/mongoose": "^5.5.43",
-    "ts-loader": "^6.2.1",
-    "typescript": "^3.7.3"
+    "typescript": "^3.7.3",
+    "@types/node": "^13.1.8",
+    "@types/mongoose": "^5.5.43"
   }
 }
