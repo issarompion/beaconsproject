@@ -21,7 +21,7 @@ const contents : IContent[] = [
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        const { url, method, headers, body, params } = request;
+        const { url, method, headers, body } = request;
 
         // wrap in delayed observable to simulate server api call
         return of(null)
@@ -31,7 +31,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             .pipe(dematerialize());
 
         function handleRoute() {
-            console.log('request',request)
             switch (true) {
                 case url.endsWith('/clients') && method === 'GET':
                     return getClients();
@@ -59,7 +58,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
         function getClient(){
             const client = clients.find(x => x.id_client === '1')
-            if(!client) return notFound();
+            if(!client) return notFound('Client not found');
             return ok(client)
         }
 
@@ -70,7 +69,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
         function getBeacon(){
             const beacon = beacons.find(x => x.id_beacon === '1')
-            if(!beacon) return notFound();
+            if(!beacon) return notFound('Beacon not found');
             return ok(beacon)
         }
 
@@ -81,7 +80,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
         function getContent(){
             const content = contents.find(x => x.content === '1')
-            if(!content) return notFound();
+            if(!content) return notFound('Content not found');
             return ok(content)
         }
 
@@ -91,16 +90,12 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             return of(new HttpResponse({ status: 200, body }))
         }
 
-        function error(message) {
-            return throwError({ error: message });
+        function notFound(message : string){
+            return throwError({ status : 404, error: message });
         }
 
-        function unauthorized() {
-            return throwError({ status: 401, error: 'Unauthorised'});
-        }
-
-        function notFound() {
-            return throwError({ status: 404, error: 'Not found'});
+        function unauthorized(message : string) {
+            return throwError({ status: 401, error: message});
         }
     }
 }

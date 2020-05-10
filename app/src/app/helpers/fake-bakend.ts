@@ -44,7 +44,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         function authenticate() {
             const { email, password } = body;
             const user = users.find(x => x.email === email && x.password === password);
-            if (!user) return error('email or password is incorrect');
+            if (!user) return unauthorized('email or password is incorrect');
             return ok({
                     id_user: user.id_user,
                     email : user.email,
@@ -55,7 +55,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }
 
         function getUsers() {
-            if (!isLoggedIn()) return unauthorized();
+            if (!isLoggedIn()) return unauthorized('Unauthorised');
             return ok(users);
         }
 
@@ -67,7 +67,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             const user = body;
             const copy = users.find(x => x.email === body.email)
             if(copy){
-                return error(body.email + ' already exists')
+                return unauthorized(body.email + ' already exists')
             }else{
                 users.push(user)
                 return ok({
@@ -85,13 +85,13 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         function ok(body?) {
             return of(new HttpResponse({ status: 200, body }))
         }
-
-        function error(message) {
-            return throwError({ error: message });
+        
+        function notFound(message : string){
+            return throwError({ status : 404, error: message });
         }
 
-        function unauthorized() {
-            return throwError({ status: 401, error: 'Unauthorised'});
+        function unauthorized(message : string) {
+            return throwError({ status: 401, error: message});
         }
 
         function isLoggedIn() {
