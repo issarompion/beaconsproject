@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Beacon management application",
   "scripts": {
-    "build:webserver":"docker build -f $(pwd)/back/microservices/src/webserver/webserver.Dockerfile --tag $(sh scripts/env.sh PROJECT_NAME)/webserver:$(sh scripts/env.sh PROJECT_VERSION)--build-arg GIT=$(sh scripts/env.sh GIT) .",
+    "build:webserver":"docker build -f $(pwd)/back/microservices/src/webserver/webserver.Dockerfile --tag $(sh scripts/env.sh PROJECT_NAME)/webserver:$(sh scripts/env.sh PROJECT_VERSION) --build-arg GIT=$(sh scripts/env.sh GIT) --build-arg API_PORT=$(sh scripts/env.sh API_PORT) .",
     "prod:webserver":"docker run --name webserver -d -p $(sh scripts/env.sh API_PORT):$(sh scripts/env.sh API_PORT) $(sh scripts/env.sh PROJECT_NAME)/webserver:$(sh scripts/env.sh PROJECT_VERSION)",
 
     "build:client":"docker build -f $(pwd)/back/microservices/src/client/client.Dockerfile --tag $(sh scripts/env.sh PROJECT_NAME)/client:PROJECT_VERSION --build-arg GIT=$(sh scripts/env.sh GIT) .",
