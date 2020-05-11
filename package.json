@@ -6,19 +6,19 @@
     "build:webserver":"docker build -f $(pwd)/back/microservices/src/webserver/webserver.Dockerfile --tag $(sh scripts/env.sh PROJECT_NAME)/webserver:$(sh scripts/env.sh PROJECT_VERSION) --build-arg GIT=$(sh scripts/env.sh GIT) --build-arg API_PORT=$(sh scripts/env.sh API_PORT) .",
     "prod:webserver":"docker run --name webserver -d -p $(sh scripts/env.sh API_PORT):$(sh scripts/env.sh API_PORT) $(sh scripts/env.sh PROJECT_NAME)/webserver:$(sh scripts/env.sh PROJECT_VERSION)",
 
-    "build:client":"docker build -f $(pwd)/back/microservices/src/client/client.Dockerfile --tag $(sh scripts/env.sh PROJECT_NAME)/client:PROJECT_VERSION --build-arg GIT=$(sh scripts/env.sh GIT) .",
+    "build:client":"docker build -f $(pwd)/back/microservices/src/client/client.Dockerfile --tag $(sh scripts/env.sh PROJECT_NAME)/client:$(sh scripts/env.sh PROJECT_VERSION) --build-arg GIT=$(sh scripts/env.sh GIT) .",
     "prod:client":"docker run --name client -d $(sh scripts/env.sh PROJECT_NAME)/client:$(sh scripts/env.sh PROJECT_VERSION)",
 
-    "build:beacon":"docker build -f $(pwd)/back/microservices/src/beacon/beacon.Dockerfile --tag $(sh scripts/env.sh PROJECT_NAME)/beacon:PROJECT_VERSION --build-arg GIT=$(sh scripts/env.sh GIT) .",
+    "build:beacon":"docker build -f $(pwd)/back/microservices/src/beacon/beacon.Dockerfile --tag $(sh scripts/env.sh PROJECT_NAME)/beacon:$(sh scripts/env.sh PROJECT_VERSION) --build-arg GIT=$(sh scripts/env.sh GIT) .",
     "prod:beacon":"docker run --name beacon -d $(sh scripts/env.sh PROJECT_NAME)/beacon:$(sh scripts/env.sh PROJECT_VERSION)",
 
-    "build:content":"docker build -f $(pwd)/back/microservices/src/content/content.Dockerfile --tag $(sh scripts/env.sh PROJECT_NAME)/content:PROJECT_VERSION --build-arg GIT=$(sh scripts/env.sh GIT) .",
+    "build:content":"docker build -f $(pwd)/back/microservices/src/content/content.Dockerfile --tag $(sh scripts/env.sh PROJECT_NAME)/content:$(sh scripts/env.sh PROJECT_VERSION) --build-arg GIT=$(sh scripts/env.sh GIT) .",
     "prod:content":"docker run --name content -d $(sh scripts/env.sh PROJECT_NAME)/content:$(sh scripts/env.sh PROJECT_VERSION)",
 
-    "build:auth":"docker build -f $(pwd)/back/microservices/src/auth/auth.Dockerfile --tag $(sh scripts/env.sh PROJECT_NAME)/auth:PROJECT_VERSION --build-arg GIT=$(sh scripts/env.sh GIT) .",
+    "build:auth":"docker build -f $(pwd)/back/microservices/src/auth/auth.Dockerfile --tag $(sh scripts/env.sh PROJECT_NAME)/auth:$(sh scripts/env.sh PROJECT_VERSION) --build-arg GIT=$(sh scripts/env.sh GIT) .",
     "prod:auth":"docker run --name auth -d $(sh scripts/env.sh PROJECT_NAME)/auth:$(sh scripts/env.sh PROJECT_VERSION)",
 
-    "build:logger":"docker build -f $(pwd)/back/microservices/src/logger/logger.Dockerfile --tag $(sh scripts/env.sh PROJECT_NAME)/logger:PROJECT_VERSION --build-arg GIT=$(sh scripts/env.sh GIT) .",
+    "build:logger":"docker build -f $(pwd)/back/microservices/src/logger/logger.Dockerfile --tag $(sh scripts/env.sh PROJECT_NAME)/logger:$(sh scripts/env.sh PROJECT_VERSION) --build-arg GIT=$(sh scripts/env.sh GIT) .",
     "prod:logger":"docker run --name logger -d $(sh scripts/env.sh PROJECT_NAME)/logger:$(sh scripts/env.sh PROJECT_VERSION)"
   },
   "repository": {
