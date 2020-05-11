@@ -10,41 +10,41 @@ import {IUserDocument} from './document'
 const producer: Producer = new Producer(kafkaClient, { requireAcks: 1 })
 
 const consumerOptions : ConsumerOptions = {fromOffset: false};
-const authConsumer = new kafka.Consumer(kafkaClient, [{ topic:'' + ENV.kafka_topic_auth,partitions:1}], consumerOptions);
+const authConsumer = new kafka.Consumer(kafkaClient, [{ topic:ENV.kafka_topic_auth,partitions:1}], consumerOptions);
 authConsumer.on('message', (message: Message) => {
-    fetchLastOffsets(['' + ENV.kafka_topic_auth]).then(() => {
+    fetchLastOffsets([ENV.kafka_topic_auth]).then(() => {
         const data : AuthMessage  = JSON.parse(message.value.toString());
         switch (data.type) {
 
-            case ('req'):
+            case (ENV.kafka_request):
 
                 switch (data.action) {
 
-                    case 'create':
+                    case ENV.kafka_action_create:
                         create(data).then(msg =>{
                             sendKafkaMessage(producer, ENV.kafka_topic_auth, msg);
                         });
                         break;
 
-                    case 'list':
+                    case ENV.kafka_action_list:
                         list(data).then(msg =>{
                                 sendKafkaMessage(producer, ENV.kafka_topic_auth, msg);
                         });
                         break;
 
-                    case 'login':
+                    case ENV.kafka_action_login:
                         login(data).then(msg =>{
                             sendKafkaMessage(producer, ENV.kafka_topic_auth, msg);
                         })
                         break;
 
-                    case 'read':
+                    case ENV.kafka_action_read:
                         read(data).then(msg =>{
                             sendKafkaMessage(producer, ENV.kafka_topic_auth, msg);
                         })
 
                         break;
-                    case 'logout':
+                    case ENV.kafka_action_logout:
                         logout(data).then(msg => {
                             sendKafkaMessage(producer, ENV.kafka_topic_auth, msg);
                         })
@@ -64,7 +64,7 @@ const list = (data:AuthMessage):Promise<AuthMessage> =>{
         UserModel.find(function(err, users) {
             if(err){
                 res({
-                    type : 'res',
+                    type : ENV.kafka_response,
                     value : err.message,
                     action : data.action,
                     id : data.id,
@@ -75,7 +75,7 @@ const list = (data:AuthMessage):Promise<AuthMessage> =>{
                 for(let i = 0; i <= users.length ; i++){
                     if(i == users.length){
                         res({
-                            type : 'res',
+                            type : ENV.kafka_response,
                             value : value,
                             action : data.action,
                             id : data.id,
@@ -96,7 +96,7 @@ const create = (data: AuthMessage) : Promise<AuthMessage> =>{
       newUser.save(function(err,user) {
         if(err){
             res({
-                type : 'res',
+                type : ENV.kafka_response,
                 value : err.message,
                 action : data.action,
                 id : data.id,
@@ -106,7 +106,7 @@ const create = (data: AuthMessage) : Promise<AuthMessage> =>{
         generateAuthToken(newUser)
         .then(token=>{
             res({
-                type : 'res',
+                type : ENV.kafka_response,
                 value : newUser.convert(token),
                 action : data.action,
                 id : data.id,
@@ -124,7 +124,7 @@ const login = (data: AuthMessage) : Promise<AuthMessage> =>{
         UserModel.findOne({email:data.value.email},function(err, user) {
             if(err){
                 res({
-                    type : 'res',
+                    type : ENV.kafka_response,
                     value : err.message,
                     action : data.action,
                     id : data.id,
@@ -133,7 +133,7 @@ const login = (data: AuthMessage) : Promise<AuthMessage> =>{
             }else{
                 if(!user){
                     res({
-                        type : 'res',
+                        type : ENV.kafka_response,
                         value : 'Login failed! Check authentication email',
                         action : data.action,
                         id : data.id,
@@ -144,7 +144,7 @@ const login = (data: AuthMessage) : Promise<AuthMessage> =>{
                     .then(isPasswordMatch =>{
                         if (!isPasswordMatch) {
                             res({
-                                type : 'res',
+                                type : ENV.kafka_response,
                                 value : 'Login failed! Check authentication password',
                                 action : data.action,
                                 id : data.id,
@@ -154,7 +154,7 @@ const login = (data: AuthMessage) : Promise<AuthMessage> =>{
                             generateAuthToken(user)
                             .then(token =>{
                                 res({
-                                    type : 'res',
+                                    type : ENV.kafka_response,
                                     value : user.convert(token),
                                     action : data.action,
                                     id : data.id,
@@ -186,7 +186,7 @@ const read = (data: AuthMessage) : Promise<AuthMessage> =>{
         verify(token,ENV.jwt_key,function(err,result:any){
             if(err){
                 res({
-                    type : 'res',
+                    type : ENV.kafka_response,
                     value : err.message,
                     action : data.action,
                     id : data.id,
@@ -196,7 +196,7 @@ const read = (data: AuthMessage) : Promise<AuthMessage> =>{
             UserModel.findOne({ _id: result._id,'tokens.token': token },function(err, user) {
                 if(err){
                     res({
-                        type : 'res',
+                        type : ENV.kafka_response,
                         value : err.message,
                         action : data.action,
                         id : data.id,
@@ -205,7 +205,7 @@ const read = (data: AuthMessage) : Promise<AuthMessage> =>{
                 }else{
                     if (!user) {
                         res({
-                            type : 'res',
+                            type : ENV.kafka_response,
                             value : 'Not authorized to access this resource',
                             action : data.action,
                             id : data.id,
@@ -213,7 +213,7 @@ const read = (data: AuthMessage) : Promise<AuthMessage> =>{
                         })
                     }else{
                         res({
-                            type : 'res',
+                            type : ENV.kafka_response,
                             value : user.convert(token),
                             action : data.action,
                             id : data.id,
@@ -233,7 +233,7 @@ const logout = (data: AuthMessage) : Promise<AuthMessage> =>{
         verify(token,ENV.jwt_key,function(err,result:any){
             if(err){
                 res({
-                    type : 'res',
+                    type : ENV.kafka_response,
                     value : err.message,
                     action : data.action,
                     id : data.id,
@@ -243,7 +243,7 @@ const logout = (data: AuthMessage) : Promise<AuthMessage> =>{
             UserModel.findOne({ _id: result._id,'tokens.token': token },function(err, user) {
                 if(err){
                     res({
-                        type : 'res',
+                        type : ENV.kafka_response,
                         value : err.message,
                         action : data.action,
                         id : data.id,
@@ -252,7 +252,7 @@ const logout = (data: AuthMessage) : Promise<AuthMessage> =>{
                 }else{
                     if (!user) {
                         res({
-                            type : 'res',
+                            type : ENV.kafka_response,
                             value : 'Not authorized to access this resource',
                             action : data.action,
                             id : data.id,
@@ -263,7 +263,7 @@ const logout = (data: AuthMessage) : Promise<AuthMessage> =>{
                         user.save(function(err) {
                         if(err){
                             res({
-                                type : 'res',
+                                type : ENV.kafka_response,
                                 value : err.message,
                                 action : data.action,
                                 id : data.id,
@@ -271,7 +271,7 @@ const logout = (data: AuthMessage) : Promise<AuthMessage> =>{
                                 })
                         }else{
                             res({
-                                type : 'res',
+                                type : ENV.kafka_response,
                                 value : 'logout success',
                                 action : data.action,
                                 id : data.id,

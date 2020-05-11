@@ -7,41 +7,41 @@ import {IBeaconDocument} from './document';
 const producer: Producer = new Producer(kafkaClient, { requireAcks: 1 });
 
 const consumerOptions: ConsumerOptions = {fromOffset: false};
-const authConsumer = new kafka.Consumer(kafkaClient, [{ topic:'' + ENV.kafka_topic_beacon,partitions:1}], consumerOptions);
+const authConsumer = new kafka.Consumer(kafkaClient, [{ topic:ENV.kafka_topic_beacon,partitions:1}], consumerOptions);
 authConsumer.on('message', async (message: Message) => {
-    fetchLastOffsets(['' + ENV.kafka_topic_beacon]).then(() => {
+    fetchLastOffsets([ENV.kafka_topic_beacon]).then(() => {
         const data: BeaconMessage  = JSON.parse(message.value.toString());
 
         switch (data.type) {
 
-            case ('req'):
+            case (ENV.kafka_request):
 
                 switch (data.action) {
 
-                    case 'create':
+                    case ENV.kafka_action_create:
                         create(data).then(msg =>{
                             sendKafkaMessage(producer, ENV.kafka_topic_beacon, msg);
                         });
                         break;
 
-                    case 'list':
+                    case ENV.kafka_action_list:
                         list(data).then(msg =>{
                             sendKafkaMessage(producer, ENV.kafka_topic_beacon, msg);
                         });
                         break;
 
-                    case 'read':
+                    case ENV.kafka_action_read:
                         read(data).then(msg =>{
                             sendKafkaMessage(producer, ENV.kafka_topic_beacon, msg);
                         });
                         break;
-                    case 'delete':
+                    case ENV.kafka_action_delete:
                         remove(data).then(msg =>{
                             sendKafkaMessage(producer, ENV.kafka_topic_beacon, msg);
                         });
 
                         break;
-                    case 'update':
+                    case ENV.kafka_action_update:
                         update(data).then(msg =>{
                             sendKafkaMessage(producer, ENV.kafka_topic_beacon, msg);
                         });
@@ -61,7 +61,7 @@ const list = (data:BeaconMessage): Promise<BeaconMessage> =>{
         BeaconModel.find({id_client : data.value.id_client},function(err, beacons) {
             if(err){
                 res({
-                    type : 'res',
+                    type : ENV.kafka_response,
                     value : err.message,
                     action : data.action,
                     id : data.id,
@@ -72,7 +72,7 @@ const list = (data:BeaconMessage): Promise<BeaconMessage> =>{
                 for(let i = 0; i <= beacons.length ; i++){
                     if(i == beacons.length){
                         res({
-                            type : 'res',
+                            type : ENV.kafka_response,
                             value : value,
                             action : data.action,
                             id : data.id,
@@ -93,7 +93,7 @@ const create = (data: BeaconMessage) : Promise<BeaconMessage> =>{
       newBeacon.save(function(err, beacon) {
         if(err){
             res({
-                type : 'res',
+                type : ENV.kafka_response,
                 value : err.message,
                 action : data.action,
                 id : data.id,
@@ -101,7 +101,7 @@ const create = (data: BeaconMessage) : Promise<BeaconMessage> =>{
             })
         }else{
         res({
-          type : 'res',
+          type : ENV.kafka_response,
           value : beacon.convert(),
           action : data.action,
           id : data.id,
@@ -117,7 +117,7 @@ const read = (data:BeaconMessage) : Promise <BeaconMessage> => {
         BeaconModel.findById({_id:data.value.id_beacon},function(err, beacon) {
             if (err){
                 res({
-                        type : 'res',
+                        type : ENV.kafka_response,
                         value : err.message,
                         action : data.action,
                         id : data.id,
@@ -126,7 +126,7 @@ const read = (data:BeaconMessage) : Promise <BeaconMessage> => {
             }else{
                 if(beacon){
                     res({
-                        type : 'res',
+                        type : ENV.kafka_response,
                         value : beacon.convert(),
                         action : data.action,
                         id : data.id,
@@ -134,7 +134,7 @@ const read = (data:BeaconMessage) : Promise <BeaconMessage> => {
                     })
                 }else{
                     res({
-                        type : 'res',
+                        type : ENV.kafka_response,
                         value : "Ressource not found",
                         action : data.action,
                         id : data.id,
@@ -151,7 +151,7 @@ const remove = (data:BeaconMessage) : Promise <BeaconMessage> => {
         BeaconModel.findByIdAndRemove({_id:data.value.id_beacon},function(err, beacon) {
             if (err){
                 res({
-                        type : 'res',
+                        type : ENV.kafka_response,
                         value : err.message,
                         action : data.action,
                         id : data.id,
@@ -160,7 +160,7 @@ const remove = (data:BeaconMessage) : Promise <BeaconMessage> => {
             }else{
                 if(beacon){
                     res({
-                        type : 'res',
+                        type : ENV.kafka_response,
                         value : beacon.convert(),
                         action : data.action,
                         id : data.id,
@@ -168,7 +168,7 @@ const remove = (data:BeaconMessage) : Promise <BeaconMessage> => {
                     })
                 }else{
                     res({
-                        type : 'res',
+                        type : ENV.kafka_response,
                         value : "Ressource not found",
                         action : data.action,
                         id : data.id,
@@ -191,7 +191,7 @@ const update = (data:BeaconMessage) : Promise <BeaconMessage> => {
         BeaconModel.updateOne({_id:data.value.id_beacon},update,function(err, result) {
             if (err){
                 res({
-                        type : 'res',
+                        type : ENV.kafka_response,
                         value : err.message,
                         action : data.action,
                         id : data.id,
@@ -200,7 +200,7 @@ const update = (data:BeaconMessage) : Promise <BeaconMessage> => {
             }else{
                 if(result.nModified == 0){
                     res({
-                        type : 'res',
+                        type : ENV.kafka_response,
                         value : "Ressource not found",
                         action : data.action,
                         id : data.id,
@@ -208,7 +208,7 @@ const update = (data:BeaconMessage) : Promise <BeaconMessage> => {
                     })
                 }else{
                     res({
-                        type : 'res',
+                        type : ENV.kafka_response,
                         value : data.value,
                         action : data.action,
                         id : data.id,

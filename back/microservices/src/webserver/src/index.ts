@@ -17,28 +17,28 @@ app.use('/clients/:clientId/beacons/:beaconId/contents',contentsRouter)
 app.use('/users',usersRouter)
 
 app.listen(ENV.api_port, function () {
-    console.log('App listening on port '+ENV.api_port);
+    console.log(`Webserver running on ${ENV.api_url}:${ENV.api_port}`);
 });
 
 const consumerOptions: ConsumerOptions = {fromOffset: false};
 const authConsumer = new kafka.Consumer(kafkaClient, 
     [
-        { topic:'' + ENV.kafka_topic_auth, partitions:1},
-        { topic:'' + ENV.kafka_topic_beacon,partitions:1},
-        { topic:'' + ENV.kafka_topic_client,partitions:1},
-        { topic:'' + ENV.kafka_topic_content,partitions:1},
+        { topic:ENV.kafka_topic_auth, partitions:1},
+        { topic:ENV.kafka_topic_beacon,partitions:1},
+        { topic:ENV.kafka_topic_client,partitions:1},
+        { topic:ENV.kafka_topic_content,partitions:1},
     ], consumerOptions);
 const topics: string[] = [
-    '' + ENV.kafka_topic_auth,
-    '' + ENV.kafka_topic_beacon,
-    '' + ENV.kafka_topic_client,
-    '' + ENV.kafka_topic_content
+    ENV.kafka_topic_auth,
+    ENV.kafka_topic_beacon,
+    ENV.kafka_topic_client,
+    ENV.kafka_topic_content
 ];
 authConsumer.on('message', async (message: Message) => {
     fetchLastOffsets(topics).then((myOffsets) => {
         if (message.offset) {
             const data: ResourceMessage = JSON.parse(message.value.toString());
-            if (data.type === 'res') {
+            if (data.type === ENV.kafka_response) {
                 console.log('myOffsets', myOffsets);
                 let response: Response = map[data.id].response;
                 let request : RequestWithCurrentUser = map[data.id].request;

@@ -8,40 +8,40 @@ import {IClientDocument} from './document';
 const producer: Producer = new Producer(kafkaClient, { requireAcks: 1 })
 
 const consumerOptions : ConsumerOptions = {fromOffset: false};
-const authConsumer = new kafka.Consumer(kafkaClient, [{ topic:'' + ENV.kafka_topic_client,partitions:1}], consumerOptions);
+const authConsumer = new kafka.Consumer(kafkaClient, [{ topic:ENV.kafka_topic_client,partitions:1}], consumerOptions);
 authConsumer.on('message', (message: Message) => {
-    fetchLastOffsets(['' + ENV.kafka_topic_client]).then(() => {
+    fetchLastOffsets([ENV.kafka_topic_client]).then(() => {
         const data : ClientMessage  = JSON.parse(message.value.toString());
         switch (data.type) {
 
-            case ('req'):
+            case (ENV.kafka_request):
 
                 switch (data.action) {
 
-                    case 'create':
+                    case ENV.kafka_action_create:
                         create(data).then(msg =>{
                             sendKafkaMessage(producer, ENV.kafka_topic_client, msg);
                         });
                         break;
 
-                    case 'list':
+                    case ENV.kafka_action_list:
                         list(data).then(msg =>{
                             sendKafkaMessage(producer, ENV.kafka_topic_client, msg);
                         });
                         break;
 
-                    case 'read':
+                    case ENV.kafka_action_read:
                         read(data).then(msg =>{
                             sendKafkaMessage(producer, ENV.kafka_topic_client, msg);
                         });
                         break;
-                    case 'delete':
+                    case ENV.kafka_action_delete:
                         remove(data).then(msg =>{
                             sendKafkaMessage(producer, ENV.kafka_topic_client, msg);
                         });
 
                         break;
-                    case 'update':
+                    case ENV.kafka_action_update:
                         update(data).then(msg =>{
                             sendKafkaMessage(producer, ENV.kafka_topic_client, msg);
                         });
@@ -59,7 +59,7 @@ const list = (data:ClientMessage): Promise<ClientMessage> =>{
         ClientModel.find(function(err, clients) {
             if(err){
                 res({
-                    type : 'res',
+                    type : ENV.kafka_response,
                     value : err.message,
                     action : data.action,
                     id : data.id,
@@ -70,7 +70,7 @@ const list = (data:ClientMessage): Promise<ClientMessage> =>{
                 for(let i = 0; i <= clients.length ; i++){
                     if(i == clients.length){
                         res({
-                            type : 'res',
+                            type : ENV.kafka_response,
                             value : value,
                             action : data.action,
                             id : data.id,
@@ -91,7 +91,7 @@ const create = (data: ClientMessage) : Promise<ClientMessage> =>{
       newClient.save(function(err, client) {
         if(err){
             res({
-                type : 'res',
+                type : ENV.kafka_response,
                 value : err.message,
                 action : data.action,
                 id : data.id,
@@ -99,7 +99,7 @@ const create = (data: ClientMessage) : Promise<ClientMessage> =>{
             })
         }else{
         res({
-          type : 'res',
+          type : ENV.kafka_response,
           value : client.convert(),
           action : data.action,
           id : data.id,
@@ -115,7 +115,7 @@ const read = (data:ClientMessage) : Promise <ClientMessage> => {
         ClientModel.findById({_id:data.value.id_client},function(err, client) {
             if (err){
                 res({
-                        type : 'res',
+                        type : ENV.kafka_response,
                         value : err.message,
                         action : data.action,
                         id : data.id,
@@ -124,7 +124,7 @@ const read = (data:ClientMessage) : Promise <ClientMessage> => {
             }else{
                 if(client){
                     res({
-                        type : 'res',
+                        type : ENV.kafka_response,
                         value : client.convert(),
                         action : data.action,
                         id : data.id,
@@ -132,7 +132,7 @@ const read = (data:ClientMessage) : Promise <ClientMessage> => {
                     })
                 }else{
                     res({
-                        type : 'res',
+                        type : ENV.kafka_response,
                         value : "Ressource not found",
                         action : data.action,
                         id : data.id,
@@ -149,7 +149,7 @@ const remove = (data:ClientMessage) : Promise <ClientMessage> => {
         ClientModel.findByIdAndRemove({_id:data.value.id_client},function(err, client) {
             if (err){
                 res({
-                        type : 'res',
+                        type : ENV.kafka_response,
                         value : err.message,
                         action : data.action,
                         id : data.id,
@@ -158,7 +158,7 @@ const remove = (data:ClientMessage) : Promise <ClientMessage> => {
             }else{
                 if(client){
                     res({
-                        type : 'res',
+                        type : ENV.kafka_response,
                         value : client.convert(),
                         action : data.action,
                         id : data.id,
@@ -166,7 +166,7 @@ const remove = (data:ClientMessage) : Promise <ClientMessage> => {
                     })
                 }else{
                     res({
-                        type : 'res',
+                        type : ENV.kafka_response,
                         value : "Ressource not found",
                         action : data.action,
                         id : data.id,
@@ -192,7 +192,7 @@ const update = (data:ClientMessage) : Promise <ClientMessage> => {
         ClientModel.updateOne({_id:data.value.id_client},update,function(err, result) {
             if (err){
                 res({
-                        type : 'res',
+                        type : ENV.kafka_response,
                         value : err.message,
                         action : data.action,
                         id : data.id,
@@ -201,7 +201,7 @@ const update = (data:ClientMessage) : Promise <ClientMessage> => {
             }else{
                 if(result.nModified == 0){
                     res({
-                        type : 'res',
+                        type : ENV.kafka_response,
                         value : "Ressource not found",
                         action : data.action,
                         id : data.id,
@@ -209,7 +209,7 @@ const update = (data:ClientMessage) : Promise <ClientMessage> => {
                     })
                 }else{
                     res({
-                        type : 'res',
+                        type : ENV.kafka_response,
                         value : data.value,
                         action : data.action,
                         id : data.id,

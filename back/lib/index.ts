@@ -4,10 +4,6 @@ import { resolve } from "path"
 config({ path: resolve(__dirname, "../../../.env") })
 
 export interface Environnement {
-    name: string;
-    version: string;
-    git: string;
-
     db_url: string;
     db_port: string;
     db_name: string,
@@ -72,10 +68,6 @@ export interface IContent {
 }
 
 export const ENV: Environnement = {
-    name: process.env.PROJECT_NAME!,
-    version: process.env.PROJECT_VERSION!,
-    git: process.env.GIT!,
-
     db_port: process.env.DB_PORT!,
     db_url: process.env.DB_URL!,
     db_name: process.env.DB_NAME!,

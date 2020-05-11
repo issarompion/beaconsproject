@@ -3,26 +3,26 @@ const kafka = require('kafka-node')
 import {Message,ConsumerOptions} from "kafka-node";
 import {ENV} from "lib";
 const consumerOptions: ConsumerOptions = {fromOffset: false};
-const authConsumer = new kafka.Consumer(kafkaClient, [{ topic:'' + ENV.kafka_topic_logger,partitions:1}], consumerOptions);
+const authConsumer = new kafka.Consumer(kafkaClient, [{ topic:ENV.kafka_topic_logger,partitions:1}], consumerOptions);
 authConsumer.on('message', async (message: Message) => {
     const data: any  = JSON.parse(message.value.toString());
 
     switch (data.type) {
 
-        case ('req'):
+        case (ENV.kafka_request):
 
             switch (data.action) {
 
-                case 'create':
+                case ENV.kafka_action_create:
                     break;
 
-                case 'delete':
+                case ENV.kafka_action_delete:
                     break;
 
-                case 'read':
+                case ENV.kafka_action_read:
                     break;
 
-                case 'update':
+                case ENV.kafka_action_update:
                     break;
                     
                 default: break;
