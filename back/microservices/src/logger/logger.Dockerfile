@@ -12,5 +12,4 @@ RUN npm run install:lib
 RUN npm run install:microservices
 RUN npm run install:logger
 WORKDIR /app/back/microservices/src/logger
-EXPOSE 3000/tcp
 CMD npm run start
