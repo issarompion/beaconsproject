@@ -13,8 +13,8 @@
     "e2e": "ng e2e",
     "postinstall": "npm run build",
     "serve": "npm run config && ionic serve",
-    "prepare:ios": "npm run config && ionic cordova prepare ios",
-    "prepare:android": "npm run config && ionic cordova prepare ios"
+    "prod:ios": "npm run config && ionic cordova prepare ios",
+    "prod:android": "npm run config && ionic cordova prepare ios"
   },
   "private": true,
   "dependencies": {
