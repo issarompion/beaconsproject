@@ -1,4 +1,6 @@
 export interface Environnement {
+    project_name: string;
+
     db_url: string;
     db_port: string;
     db_name: string,

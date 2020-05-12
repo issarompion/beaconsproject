@@ -11,6 +11,9 @@ const kafka = require('kafka-node');
 
 export const map: any = {};
 
+app.get('/', (req: Request, res: Response) => {
+    res.status(200).send(`Welcome to ${ENV.project_name} API`)
+});
 app.use('/clients',clientsRouter)
 app.use('/clients/:clientId/beacons',beaconsRouter)
 app.use('/clients/:clientId/beacons/:beaconId/contents',contentsRouter)

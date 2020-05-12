@@ -10,16 +10,20 @@
     "install:content": "cd microservices/content && npm install && node_modules/.bin/tsc",
     "install:logger": "cd microservices/logger && npm install && node_modules/.bin/tsc",
     "install:webserver": "cd microservices/webserver && npm install && node_modules/.bin/tsc",
-    "install:all":"npm run install:shared && npm run install:webserver && npm run install:auth && npm run install:beacon && npm run install:client && npm run install:content && npm run install:logger",
-    "start:auth":"cd microservices/auth && node dist/index.js",
-    "start:beacon":"cd microservices/beacon && node dist/index.js",
-    "start:client":"cd microservices/client && node dist/index.js",
-    "start:content":"cd microservices/content && node dist/index.js",
-    "start:logger":"cd microservices/logger && node dist/index.js",
-    "start:webserver":"cd microservices/webserver && node dist/index.js",
+    "install:all": "npm run install:shared && npm run install:webserver && npm run install:auth && npm run install:beacon && npm run install:client && npm run install:content && npm run install:logger",
+    "start": "npm run start:auth & npm run start:beacon & npm run start:client & npm run start:content & npm run start:logger & npm run start:webserver",
+    "start:auth": "cd microservices/auth && node dist/index.js",
+    "start:beacon": "cd microservices/beacon && node dist/index.js",
+    "start:client": "cd microservices/client && node dist/index.js",
+    "start:content": "cd microservices/content && node dist/index.js",
+    "start:logger": "cd microservices/logger && node dist/index.js",
+    "start:webserver": "cd microservices/webserver && node dist/index.js",
     "clear:modules": "find . -name 'node_modules' -type d -prune -print -exec rm -rf '{}' \\;",
     "clear:dist": "find . -name 'dist' -type d -prune -print -exec rm -rf '{}' \\;",
     "clear:package-lock": "find . -name 'package-lock.json' -delete",
     "clear:all": "npm run clear:modules && npm run clear:dist && npm run clear:package-lock"
+  },
+  "devDependencies": {
+    "wait-on": "^5.0.0"
   }
 }
