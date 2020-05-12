@@ -12,7 +12,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "postinstall": "npm run build",
-    "serve": "npm run config && ionic serve",
+    "serve": "npm run config && ionic serve --no-open",
     "prod:ios": "npm run config && ionic cordova prepare ios",
     "prod:android": "npm run config && ionic cordova prepare ios"
   },
