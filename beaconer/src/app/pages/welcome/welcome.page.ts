@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController } from '@ionic/angular'
+import { MenuController } from '@ionic/angular';
+import {environment} from '../../../environments/environment'
 
 @Component({
   selector: 'app-welcome',
@@ -7,6 +8,8 @@ import { MenuController } from '@ionic/angular'
   styleUrls: ['./welcome.page.scss'],
 })
 export class WelcomePage implements OnInit {
+
+  project_name = environment.project_name
 
   constructor(
     public menuCtrl : MenuController,

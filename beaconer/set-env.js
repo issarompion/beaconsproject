@@ -14,7 +14,8 @@ const envConfigFile = `export const environment = {
   production: false,
   api_url:'http://${process.env.API_URL}:${process.env.API_PORT}',
   beacon_identifier:'${process.env.BEACON_IDENTIFIER}',
-  google_maps_browser_api_key:'${process.env.GOOGLE_MAPS_BROWSER_API_KEY}'
+  google_maps_browser_api_key:'${process.env.GOOGLE_MAPS_BROWSER_API_KEY}',
+  project_name:'${process.env.PROJECT_NAME}'
 };
 `;
 
@@ -22,7 +23,8 @@ const envProdConfigFile = `export const environment = {
   production: true,
   api_url:'http://${process.env.API_URL}:${process.env.API_PORT}',
   beacon_identifier:'${process.env.BEACON_IDENTIFIER}',
-  google_maps_browser_api_key:'${process.env.GOOGLE_MAPS_BROWSER_API_KEY}'
+  google_maps_browser_api_key:'${process.env.GOOGLE_MAPS_BROWSER_API_KEY}',
+  project_name:'${process.env.PROJECT_NAME}'
 };
 `;
 
