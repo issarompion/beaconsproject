@@ -1,0 +1,17 @@
+{
+  "main": "./dist/index.js",
+  "scripts": {
+    "start": "npm run build && node dist/index.js",
+    "build": "node_modules/.bin/tsc"
+  },
+  "dependencies": {
+    "@log4js-node/logstash-http": "^1.0.0",
+    "kafka-node": "^5.0.0",
+    "log4js": "^6.1.0",
+    "shared": "file:../../shared"
+  },
+  "devDependencies": {
+    "@types/node": "^13.1.8",
+    "typescript": "^3.7.3"
+  }
+}

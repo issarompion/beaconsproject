@@ -1,0 +1,17 @@
+{
+  "main": "./dist/index.js",
+  "scripts": {
+    "start": "npm run build && node dist/index.js",
+    "build": "node_modules/.bin/tsc"
+  },
+  "dependencies": {
+    "kafka-node": "^5.0.0",
+    "mongoose": "^5.8.7",
+    "shared": "file:../../shared"
+  },
+  "devDependencies": {
+    "typescript": "^3.7.3",
+    "@types/node": "^13.1.8",
+    "@types/mongoose": "^5.5.43"
+  }
+}

@@ -2,6 +2,8 @@ node_modules
 dist
 .env
 package-lock.json
-environment.ts
-environment.prod.ts
+app/src/environments/environment.ts
+app/src/environments/environment.prod.ts
+beaconer/src/environments/environment.ts
+beaconer/src/environments/environment.prod.ts
 beaconer/config.xml

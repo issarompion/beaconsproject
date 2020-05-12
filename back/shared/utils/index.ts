@@ -1,0 +1,1 @@
+export { kafkaClient, offset, sendKafkaMessage, MyOffset, fetchLastOffsets } from "./kafka"
