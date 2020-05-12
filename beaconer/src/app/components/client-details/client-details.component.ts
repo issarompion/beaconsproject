@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { HttpService } from '../../services/http.service';
-import {IClient} from '../../models/interfaces';
+import {IClient} from '../../models/entities';
 
 @Component({
   selector: 'app-client-details',

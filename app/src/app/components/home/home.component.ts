@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
-import { IUser } from '../../models/interfaces';
+import { IUser } from '../../models/entities';
 import { HttpService } from '../../services/http.service';
 
 @Component({

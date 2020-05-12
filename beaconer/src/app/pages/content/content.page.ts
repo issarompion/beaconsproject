@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute } from '@angular/router';
 import {HttpService} from '../../services/http.service';
-import {IContent} from '../../models/interfaces';
+import {IContent} from '../../models/entities';
 
 @Component({
   selector: 'app-content',

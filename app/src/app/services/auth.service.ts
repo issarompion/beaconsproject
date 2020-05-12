@@ -3,7 +3,7 @@ import { HttpClient,HttpHeaders,HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
-import { IUser } from '../models/interfaces';
+import { IUser } from '../models/entities';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json'})

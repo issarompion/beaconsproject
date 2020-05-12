@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpRequest, HttpResponse, HttpHandler, HttpEvent, HttpInterceptor, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
-import { IClient, IBeacon, IContent } from '../models/interfaces';
+import { IClient, IBeacon, IContent } from '../models/entities';
 
 const clients: IClient[] = [
     {id_client: '1',name: "ESIR",url:"https://esir.univ-rennes1.fr",img:"https://esir.univ-rennes1.fr/sites/esir.univ-rennes1.fr/files/esir_0.png",lat:0,lng:1},

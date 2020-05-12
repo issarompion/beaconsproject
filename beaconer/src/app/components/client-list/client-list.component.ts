@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../../services/http.service';
-import {IClient} from '../../models/interfaces';
+import {IClient} from '../../models/entities';
 import { MenuController } from '@ionic/angular'
 
 @Component({

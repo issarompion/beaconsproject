@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpRequest, HttpResponse, HttpHandler, HttpEvent, HttpInterceptor, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
-import { IUser, IClient } from '../models/interfaces';
+import { IUser, IClient } from '../models/entities';
 
 const users: IUser[] = [
     { id_user: '1', email :'test@gmail.com', name: 'test', password: 'test', id_client: 'Test' }

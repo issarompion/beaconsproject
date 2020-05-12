@@ -4,7 +4,7 @@ import {BeaconService} from '../../services/beacon.service';
 import {HttpService} from '../../services/http.service';
 import {Platform} from '@ionic/angular';
 import {Beacon} from '@ionic-native/ibeacon/ngx';
-import {IBeacon} from '../../models/interfaces';
+import {IBeacon} from '../../models/entities';
 import {ToastController} from "@ionic/angular";
 import {Subscription} from 'rxjs';
 
