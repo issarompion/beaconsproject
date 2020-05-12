@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { AuthService } from './services/auth.service';
 import { IUser } from './models/entities';
+import { environment } from '../environments/environment'
 
 @Component({
   selector: 'app-root',
@@ -16,6 +17,7 @@ export class AppComponent {
         private router: Router,
         private authenticationService: AuthService
     ) {
+        document.title = environment.project_name
         this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
     }
 
