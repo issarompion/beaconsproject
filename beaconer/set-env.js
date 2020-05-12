@@ -31,7 +31,7 @@ const envProdConfigFile = `export const environment = {
 const envConfigXmlFile = `<?xml version='1.0' encoding='utf-8'?>
 <widget id="io.ionic.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>${process.env.PROJECT_NAME}</name>
-    <description>${process.env.PROJECT_DESCRIPTION}</description>
+    <description>Mobile application used to display the contents of beacon, using angular, ionic and cordova.</description>
     <author email="hi@ionicframework.com" href="http://ionicframework.com/">Ionic Framework Team</author>
     <content src="index.html" />
     <access origin="*" />
