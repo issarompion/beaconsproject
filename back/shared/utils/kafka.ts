@@ -1,10 +1,10 @@
 import { Producer, KafkaClient, KafkaClientOptions, Offset } from 'kafka-node';
+import { createReadStream } from 'fs'
 import { ENV } from "../helpers";
 import { BeaconMessage, ClientMessage, AuthMessage, ContentMessage } from "../models"
 
 let clientOptions: KafkaClientOptions = {kafkaHost: `${ENV.kafka_url}:${ENV.kafka_port}`};
 if(ENV.production){
-    clientOptions.autoConnect = true
     clientOptions.sslOptions = {
         rejectUnauthorized: false,
         ca: [ENV.kafka_ca_certificate],
