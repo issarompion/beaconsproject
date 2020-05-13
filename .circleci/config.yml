@@ -9,6 +9,7 @@ jobs:
       - checkout
       - node/with-cache:
           steps:
+            - run: echo $KAFKA_ACESS_CERTIFICATE
             - run: npm install
             - run: npm test
 workflows:
