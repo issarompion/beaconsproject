@@ -25,9 +25,9 @@ export interface Environnement {
     kafka_action_create: string,
     kafka_action_login: string,
     kafka_action_logout: string,
-    kafka_ca_certificate?:string,
-    kafka_acess_certificate?:string,
-    kafka_acess_key?:string
+    kafka_ca_certificate:string,
+    kafka_acess_certificate:string,
+    kafka_acess_key:string
 
     jwt_key:string
 }
