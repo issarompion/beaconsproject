@@ -2,10 +2,11 @@ import { config } from "dotenv"
 import { resolve } from "path"
 import { Environnement } from "../models"
 
-config({ path: resolve(__dirname, "../../../../.env") })
+config({ path: resolve(__dirname, `${process.env.PROJECT_PATH}/.env`) })
 
 export const ENV: Environnement = {
     production: (/true/i).test(process.env.PRODUCTION!),
+    project_path: process.env.PROJECT_PATH!,
     project_name: process.env.PROJECT_NAME!,
 
     db_port: process.env.DB_PORT!,

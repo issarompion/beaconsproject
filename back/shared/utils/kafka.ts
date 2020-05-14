@@ -1,5 +1,5 @@
 import { Producer, KafkaClient, KafkaClientOptions, Offset } from 'kafka-node';
-import { createReadStream } from 'fs'
+import { readFileSync } from 'fs'
 import { ENV } from "../helpers";
 import { BeaconMessage, ClientMessage, AuthMessage, ContentMessage } from "../models"
 
@@ -10,9 +10,9 @@ const clientOptions = () : KafkaClientOptions => {
             kafkaHost: kafkaHost,
             sslOptions: {
                 rejectUnauthorized: false,
-                ca: [ENV.kafka_ca_certificate],
-                cert: [ENV.kafka_acess_certificate],
-                key: [ENV.kafka_acess_key]
+                ca: [readFileSync(`${ENV.project_path}/ca.pem`, 'utf-8')],
+                cert: [readFileSync(`${ENV.project_path}/service.cert`, 'utf-8')],
+                key: [readFileSync(`${ENV.project_path}/service.key`, 'utf-8')]
               }
         }
     }else{

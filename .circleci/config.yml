@@ -5,10 +5,25 @@ jobs:
   build-and-test:
     executor:
       name: node/default
+    docker:
+      - image: wurstmeister/zookeeper
+      - image: wurstmeister/kafka:latest
+      environment:
+        KAFKA_ADVERTISED_HOST_NAME: localhost
+        KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+        KAFKA_CREATE_TOPICS: "auth:1:1,client:1:1,beacon:1:1,content:1:1,logger:1:1"
+        KAFKA_TOPIC_BEACON: beacon
     steps:
       - checkout
       - node/with-cache:
           steps:
+            - run: export PROJECT_PATH=$(pwd)
+            - run: printenv
+            - run: docker images
+            - run: docker run -d -p 2181:2181 wurstmeister/zookeeper
+            - run: docker run -d -p 9092:9092 wurstmeister/kafka:latest
+            - run: docker ps
+            - run: sh scripts/kafka.sh
             - run: npm install
             - run: npm test
 workflows:

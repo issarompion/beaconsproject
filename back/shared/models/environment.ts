@@ -1,9 +1,10 @@
 export interface Environnement {
-    production: boolean;
-    project_name: string;
+    production: boolean,
+    project_path:string,
+    project_name: string,
 
-    db_url: string;
-    db_port: string;
+    db_url: string,
+    db_port: string,
     db_name: string,
 
     api_port: string,
