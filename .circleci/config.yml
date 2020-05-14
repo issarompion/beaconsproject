@@ -15,7 +15,6 @@ jobs:
           KAFKA_CREATE_TOPICS: "auth:1:1,client:1:1,beacon:1:1,content:1:1,logger:1:1"
 
     environment:
-      KAFKA_TOPIC_BEACON: beacon
       PRODUCTION: false
       PROJECT_NAME: beaconsprojet
       PROJECT_VERSION: 1.0
