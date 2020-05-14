@@ -5,7 +5,7 @@ jobs:
   build-and-test:
     docker:
       # Main image
-      - image: cypress/base:8
+      - image: cypress/base
       
       # Mongo
       - image: mongo
@@ -52,7 +52,7 @@ jobs:
 
     steps:
       - checkout
-      - run: npm install
+      - run: npm install && cd back && npm run install:all
       - run: npm test
 workflows:
     build-and-test:

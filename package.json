@@ -9,7 +9,6 @@
     "cy:run:app": "cypress run --spec cypress/integration/app/*.ts",
     "start:beaconer": "cd beaconer && npm run serve",
     "cy:run:beaconer": "cypress run --spec cypress/integration/beaconer/*.ts",
-    "postinstall": "cd back && npm run install:all",
     "start:back": "cd back && npm run start",
     "cy:run:back": "cypress run --spec cypress/integration/back/*.ts",
     "test:back": "./node_modules/.bin/start-server-and-test start:back http://localhost:$API_PORT cy:run:back",
