@@ -9,19 +9,19 @@ jobs:
       - image: wurstmeister/kafka:latest
         environment:
           KAFKA_ADVERTISED_HOST_NAME: localhost
-          KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+          KAFKA_ADVERTISED_PORT: 9092
+          KAFKA_PORT: 9092
+          KAFKA_ZOOKEEPER_CONNECT: localhost:2181
           KAFKA_CREATE_TOPICS: "auth:1:1,client:1:1,beacon:1:1,content:1:1,logger:1:1"
 
     environment:
       KAFKA_TOPIC_BEACON: beacon
+      KAFKA_HOME: opt/kafka
+
     steps:
       - checkout
       - run: export PROJECT_PATH=$(pwd)
       - run: printenv
-      - run: docker images
-      - run: docker run -d -p 2181:2181 wurstmeister/zookeeper
-      - run: docker run -d -p 9092:9092 wurstmeister/kafka:latest
-      - run: docker ps
       - run: sh scripts/kafka.sh 
       - node/with-cache:
           steps:
