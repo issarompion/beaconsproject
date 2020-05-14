@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Beacon management application",
   "scripts": {
-    "install":"npm install && npm run install:back && npm run install:app && npm run install:beaconer",
+    "install":"npm run install:back && npm run install:app && npm run install:beaconer",
     "install:back":"cd back && npm run install:all",
     "install:app":"cd app && npm install",
     "install:beaconer":"cd beaconer && npm install",
