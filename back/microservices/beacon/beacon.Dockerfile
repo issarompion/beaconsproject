@@ -3,7 +3,6 @@ USER root
 
 ARG GIT
 RUN git clone ${GIT} /app
-COPY .env /app/.env
 
 USER root
 WORKDIR /app/back

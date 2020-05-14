@@ -2,11 +2,10 @@ import { config } from "dotenv"
 import { resolve } from "path"
 import { Environnement } from "../models"
 
-config({ path: resolve(__dirname, `${process.env.PROJECT_PATH}/.env`) })
+config({ path: resolve(__dirname, "../../../../.env") })
 
 export const ENV: Environnement = {
     production: (/true/i).test(process.env.PRODUCTION!),
-    project_path: process.env.PROJECT_PATH!,
     project_name: process.env.PROJECT_NAME!,
 
     db_port: process.env.DB_PORT!,
@@ -36,11 +35,5 @@ export const ENV: Environnement = {
     jwt_key:process.env.JWT_KEY!,
 
 };
-
-if(ENV.production){
-    ENV.kafka_ca_certificate = process.env.KAFKA_CA_CERTIFICATE!
-    ENV.kafka_acess_certificate = process.env.KAFKA_ACESS_CERTIFICATE!
-    ENV.kafka_acess_key = process.env.KAFKA_ACESS_KEY!
-}
 
 console.log(ENV)

@@ -6,3 +6,6 @@ app/src/environments/environment.prod.ts
 beaconer/src/environments/environment.ts
 beaconer/src/environments/environment.prod.ts
 beaconer/config.xml
+ca.pem
+service.cert
+service.key

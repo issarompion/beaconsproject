@@ -53,8 +53,6 @@ jobs:
     steps:
       - checkout
       - run: export PROJECT_PATH=$(pwd)
-      - run: printenv
-      - run: sh scripts/kafka.sh 
       - run: npm install
       - run: npm test
 workflows:
