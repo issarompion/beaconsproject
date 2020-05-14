@@ -5,6 +5,7 @@ import { Environnement } from "../models"
 config({ path: resolve(__dirname, "../../../../.env") })
 
 export const ENV: Environnement = {
+    production: (/true/i).test(process.env.PRODUCTION!),
     project_name: process.env.PROJECT_NAME!,
 
     db_port: process.env.DB_PORT!,

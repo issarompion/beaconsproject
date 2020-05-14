@@ -7,11 +7,10 @@
     "start": "npm run config && ng serve",
     "build": "npm run config && ng build",
     "build:prod": "npm run config && ng build --prod",
-    "prod":"npm run build:prod && http-server dist/app -p $(cd .. && sh scripts/env.sh APP_PORT)",
+    "prod": "npm run build:prod && http-server dist/app -p $APP_PORT",
     "test": "npm run config && ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "postinstall": "npm run build"
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {

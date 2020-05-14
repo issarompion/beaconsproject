@@ -5,7 +5,6 @@
     "build": "node_modules/.bin/tsc"
   },
   "devDependencies": {
-    "@types/node": "^13.1.8",
     "typescript": "^3.7.3",
     "kafka-node": "^5.0.0",
     "@types/express": "^4.17.2"

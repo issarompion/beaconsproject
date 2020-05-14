@@ -1,9 +1,27 @@
 import { Producer, KafkaClient, KafkaClientOptions, Offset } from 'kafka-node';
+import { readFileSync } from 'fs'
 import { ENV } from "../helpers";
+
 import { BeaconMessage, ClientMessage, AuthMessage, ContentMessage } from "../models"
 
-const clientOptions: KafkaClientOptions = {kafkaHost: `${ENV.kafka_url}:${ENV.kafka_port}`};
-export const kafkaClient: KafkaClient = new KafkaClient(clientOptions);
+const clientOptions = () : KafkaClientOptions => {
+    let kafkaHost : string = `${ENV.kafka_url}:${ENV.kafka_port}`
+    if(ENV.production){
+        return {
+            kafkaHost: kafkaHost,
+            sslOptions: {
+                rejectUnauthorized: false,
+                ca: [readFileSync(`../../../../ca.pem`, 'utf-8')],
+                cert: [readFileSync(`../../../../service.cert`, 'utf-8')],
+                key: [readFileSync(`../../../../service.key`, 'utf-8')]
+              }
+        }
+    }else{
+        return {kafkaHost: kafkaHost};
+    }
+}
+
+export const kafkaClient: KafkaClient = new KafkaClient(clientOptions());
 export const offset: Offset = new Offset(kafkaClient);
 
 export const sendKafkaMessage = ( prod: Producer, topicVal: string, msg: BeaconMessage | ClientMessage | AuthMessage | ContentMessage  ) => {

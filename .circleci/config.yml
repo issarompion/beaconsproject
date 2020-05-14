@@ -1,0 +1,63 @@
+version: 2.1
+orbs:
+  node: circleci/node@1.1.6
+jobs:
+  build-and-test:
+    docker:
+      # Main image
+      - image: cypress/base
+      
+      # Mongo
+      - image: mongo
+        environment:
+          MONGODB_DATABASE: beaconsproject
+
+      # Kafka
+      - image: wurstmeister/zookeeper
+      - image: wurstmeister/kafka
+        environment:
+          KAFKA_ADVERTISED_HOST_NAME: localhost
+          KAFKA_ADVERTISED_PORT: 9092
+          KAFKA_PORT: 9092
+          KAFKA_ZOOKEEPER_CONNECT: localhost:2181
+          KAFKA_CREATE_TOPICS: "auth:1:1,client:1:1,beacon:1:1,content:1:1,logger:1:1"
+
+    environment:
+      PRODUCTION: false
+      PROJECT_NAME: beaconsprojet
+      PROJECT_VERSION: 1.0
+      GIT: https://github.com/issarompion/beaconsproject.git
+      DB_PORT: 27017
+      DB_URL: mongodb://localhost
+      DB_NAME: beaconsproject
+      API_URL: localhost
+      API_PORT: 3000
+      KAFKA_URL: localhost
+      KAFKA_PORT: 9092
+      KAFKA_TOPIC_AUTH: auth
+      KAFKA_TOPIC_BEACON: beacon
+      KAFKA_TOPIC_CLIENT: client
+      KAFKA_TOPIC_CONTENT: content
+      KAFKA_TOPIC_LOGGER: logger
+      KAFKA_REQUEST: req
+      KAFKA_RESPONSE: res
+      KAFKA_ACTION_LIST: list
+      KAFKA_ACTION_READ: read
+      KAFKA_ACTION_UPDATE: update
+      KAFKA_ACTION_DELETE: delete
+      KAFKA_ACTION_CREATE: create
+      KAFKA_ACTION_LOGIN: login
+      KAFKA_ACTION_LOGOUT: logout
+      JWT_KEY: beaconsproject
+
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm run install
+      - run: npm test
+workflows:
+    build-and-test:
+      jobs:
+        - build-and-test
+
+
