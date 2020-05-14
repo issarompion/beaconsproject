@@ -5,7 +5,7 @@ jobs:
   build-and-test:
     docker:
       # Main image
-      - image: circleci/node:13.3.0
+      - image: cypress/base:8
       
       # Mongo
       - image: mongo
@@ -52,7 +52,6 @@ jobs:
 
     steps:
       - checkout
-      - run: unset NODE_OPTIONS
       - run: npm install
       - run: npm test
 workflows:
