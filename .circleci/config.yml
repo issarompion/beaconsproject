@@ -5,8 +5,8 @@ jobs:
   build-and-test:
     docker:
       # Kafka images
-      - image: circleci/cci-demo-docker-primary:0.0.2
-      - image: postgres:9.4.1
+      - image: wurstmeister/zookeeper
+      - image: wurstmeister/kafka:latest
         environment:
           KAFKA_ADVERTISED_HOST_NAME: localhost
           KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
