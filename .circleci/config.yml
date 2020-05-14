@@ -1,10 +1,8 @@
 version: 2.1
-orbs:
-  node: circleci/node@1.1.6
 jobs:
   build-and-test:
     docker:
-      # Kafka images
+      - images: circleci/node:13.3.0
       - image: wurstmeister/zookeeper
       - image: wurstmeister/kafka:latest
         environment:
@@ -20,11 +18,11 @@ jobs:
 
     steps:
       - checkout
-      - run: export PROJECT_PATH=$(pwd)
-      - run: printenv
-      - run: sh scripts/kafka.sh 
       - node/with-cache:
           steps:
+            - run: export PROJECT_PATH=$(pwd)
+            - run: printenv
+            - run: sh scripts/kafka.sh 
             - run: npm install
             - run: npm test
 workflows:
