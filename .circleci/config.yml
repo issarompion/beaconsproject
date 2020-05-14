@@ -4,9 +4,17 @@ orbs:
 jobs:
   build-and-test:
     docker:
+      # Main image
       - image: circleci/node:13.3.0
+      
+      # Mongo
+      - image: mongo
+        environment:
+          MONGODB_DATABASE: beaconsproject
+
+      # Kafka
       - image: wurstmeister/zookeeper
-      - image: wurstmeister/kafka:latest
+      - image: wurstmeister/kafka
         environment:
           KAFKA_ADVERTISED_HOST_NAME: localhost
           KAFKA_ADVERTISED_PORT: 9092

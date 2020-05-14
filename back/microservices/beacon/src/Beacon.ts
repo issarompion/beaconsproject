@@ -5,7 +5,7 @@ import {Schema, model,connect} from 'mongoose';
 const url = ENV.db_url+':'+ENV.db_port+'/'+ENV.db_name;
 connect(url,{useUnifiedTopology: true, useNewUrlParser: true})
 .then(() => console.log('DB Connected!'))
-.catch(err => {console.log(`DB Connection Error:${err.message}`);});
+.catch(err => {console.error(`DB Connection Error:${err.message}`);});
 
 const BeaconSchema: Schema = new Schema({
     name: {
