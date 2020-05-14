@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   build-and-test:
     docker:
-      - images: circleci/node:13.3.0
+      - image: circleci/node:13.3.0
       - image: wurstmeister/zookeeper
       - image: wurstmeister/kafka:latest
         environment:
