@@ -4,7 +4,7 @@ import {Schema, model,connect} from 'mongoose';
 import {hash,genSalt} from 'bcryptjs';
 
 const url = ENV.db_url+':'+ENV.db_port+'/'+ENV.db_name
-connect(url,{useUnifiedTopology: true, useNewUrlParser: true,})
+connect(url,{useUnifiedTopology: true, useNewUrlParser: true,useCreateIndex: true})
 .then(() => console.log('DB Connected!'))
 .catch(err => {console.log(`DB Connection Error:${err.message}`);});
 

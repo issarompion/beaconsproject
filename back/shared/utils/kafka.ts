@@ -3,17 +3,24 @@ import { createReadStream } from 'fs'
 import { ENV } from "../helpers";
 import { BeaconMessage, ClientMessage, AuthMessage, ContentMessage } from "../models"
 
-let clientOptions: KafkaClientOptions = {kafkaHost: `${ENV.kafka_url}:${ENV.kafka_port}`};
-if(ENV.production){
-    clientOptions.sslOptions = {
-        rejectUnauthorized: false,
-        ca: [ENV.kafka_ca_certificate],
-        cert: [ENV.kafka_acess_certificate],
-        key: [ENV.kafka_acess_key]
-      }
+const clientOptions = () : KafkaClientOptions => {
+    let kafkaHost : string = `${ENV.kafka_url}:${ENV.kafka_port}`
+    if(ENV.production){
+        return {
+            kafkaHost: kafkaHost,
+            sslOptions: {
+                rejectUnauthorized: false,
+                ca: [ENV.kafka_ca_certificate],
+                cert: [ENV.kafka_acess_certificate],
+                key: [ENV.kafka_acess_key]
+              }
+        }
+    }else{
+        return {kafkaHost: kafkaHost};
+    }
 }
 
-export const kafkaClient: KafkaClient = new KafkaClient(clientOptions);
+export const kafkaClient: KafkaClient = new KafkaClient(clientOptions());
 export const offset: Offset = new Offset(kafkaClient);
 
 export const sendKafkaMessage = ( prod: Producer, topicVal: string, msg: BeaconMessage | ClientMessage | AuthMessage | ContentMessage  ) => {

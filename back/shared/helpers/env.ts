@@ -31,12 +31,15 @@ export const ENV: Environnement = {
     kafka_action_create: process.env.KAFKA_ACTION_CREATE!,
     kafka_action_login: process.env.KAFKA_ACTION_LOGIN!,
     kafka_action_logout: process.env.KAFKA_ACTION_LOGOUT!,
-    kafka_ca_certificate: process.env.KAFKA_CA_CERTIFICATE!,
-    kafka_acess_certificate: process.env.KAFKA_ACESS_CERTIFICATE!,
-    kafka_acess_key: process.env.KAFKA_ACESS_KEY!,
 
     jwt_key:process.env.JWT_KEY!,
 
 };
+
+if(ENV.production){
+    ENV.kafka_ca_certificate = process.env.KAFKA_CA_CERTIFICATE!
+    ENV.kafka_acess_certificate = process.env.KAFKA_ACESS_CERTIFICATE!
+    ENV.kafka_acess_key = process.env.KAFKA_ACESS_KEY!
+}
 
 console.log(ENV)
