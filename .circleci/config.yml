@@ -52,7 +52,7 @@ jobs:
 
     steps:
       - checkout
-      - run: export PROJECT_PATH=$(pwd)
+      - run: unset NODE_OPTIONS
       - run: npm install
       - run: npm test
 workflows:
