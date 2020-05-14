@@ -3,9 +3,9 @@ orbs:
   node: circleci/node@1.1.6
 jobs:
   build-and-test:
-    executor:
-      name: node/default
-    docker:
+    docker: 
+      # DLC does nothing here, its caching depends on commonality of the image layers.
+      - image: circleci/node:9.8.0-stretch-browsers 
       - image: wurstmeister/zookeeper
       - image: wurstmeister/kafka:latest
       environment:
