@@ -67,7 +67,7 @@ workflows:
         - build-back
         - test-back:
             requires:
-              - build
+              - build-back
         - deploy-back:
             requires:
               - test-back
