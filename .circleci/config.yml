@@ -67,14 +67,14 @@ jobs:
     executor: default
     steps: 
       - checkout
-      - run: npm build:app
+      - run: npm run build:app
       - run: npm run test:app
   
   build-test-beaconer:
     executor: default
     steps:
       - checkout
-      - run: npm build:app
+      - run: npm run build:app
       - run: npm run test:beaconer
 
 workflows:
