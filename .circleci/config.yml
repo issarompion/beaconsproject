@@ -53,14 +53,14 @@ jobs:
       # Install Docker client to enable running commands on the remote Docker,
       # set up above.
       - run:
-        name: Install Docker client
-        command: |
-          set -x
-          if [ ! -f docker-17.03.0-ce.tgz ]; then
-            curl -sLO https://download.docker.com/linux/static/stable/x86_64/docker-17.03.0-ce.tgz
-          fi
-          tar -xz -C /tmp -f docker-17.03.0-ce.tgz
-          mv /tmp/docker/* /usr/bin
+          name: Install Docker client
+          command: |
+            set -x
+            if [ ! -f docker-17.03.0-ce.tgz ]; then
+              curl -sLO https://download.docker.com/linux/static/stable/x86_64/docker-17.03.0-ce.tgz
+            fi
+            tar -xz -C /tmp -f docker-17.03.0-ce.tgz
+            mv /tmp/docker/* /usr/bin
       - run: set > ".env"
       - run: cat .env
       - run: npm install
