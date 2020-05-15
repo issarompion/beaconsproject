@@ -3,6 +3,7 @@ executors:
   default:
     docker:
       - image: cypress/base
+      - image: circleci/buildpack-deps:stretch
     working_directory: ~/beaconsproject
     environment:
       PRODUCTION: false
@@ -32,27 +33,10 @@ executors:
       KAFKA_ACTION_LOGOUT: logout
       JWT_KEY: beaconsproject
 jobs:
-  pre-build:
-    executor: default
-    steps:
-      - checkout
-      - setup_remote_docker
-      - run:
-          name: Install Docker client
-          command: |
-            set -x
-            if [ ! -f docker-17.03.0-ce.tgz ]; then
-              curl -sLO https://download.docker.com/linux/static/stable/x86_64/docker-17.03.0-ce.tgz
-            fi
-            tar -xz -C /tmp -f docker-17.03.0-ce.tgz
-            mv /tmp/docker/* /usr/bin
-      - run: set > ".env"
-      - run: cat .env
-      - run: npm install
-
   build-test-back:
     executor: default
     steps:
+      - run: set > ".env"
       - run: sh scripts/build_back.sh $DOCKERHUB_USERNAME $PROJECT_VERSION $GIT $API_PORT
       - run: sh scripts/run_back.sh $DOCKERHUB_USERNAME $PROJECT_VERSION $API_PORT
       - run: ./node_modules/.bin/wait-on http://$API_URL:$API_PORT && npm run cy:run:back
@@ -81,20 +65,13 @@ workflows:
   version: 2
   build-test-deploy:
       jobs:
-        - pre-build
 
-        - build-test-back:
-            requires:
-              - pre-build
+        - build-test-back
 
         - deploy-back:
             requires:
               - build-test-back
 
-        - build-test-app:
-            requires:
-              - pre-build
+        - build-test-app
 
-        - build-test-beaconer:
-            requires:
-              - pre-build
+        - build-test-beaconer
