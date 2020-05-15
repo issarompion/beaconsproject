@@ -7,7 +7,7 @@
     "build:beaconer": "cd beaconer && npm install",
     "cy:open": "cypress open",
     "cy:run:app": "cypress run --spec cypress/integration/app/*.ts",
-    "start:app": "cd beaconer && npm run start",
+    "start:app": "cd app && npm run start",
     "start:beaconer": "cd beaconer && npm run start",
     "cy:run:beaconer": "cypress run --spec cypress/integration/beaconer/*.ts",
     "cy:run:back": "cypress run --spec cypress/integration/back/*.ts",
