@@ -2,17 +2,14 @@ version: 2.1
 orbs:
   node: circleci/node@1.1.6
 jobs:
-  build-and-test:
+  build:
     docker:
-      # Main image
       - image: cypress/base
-      
-      # Mongo
+
       - image: mongo
         environment:
           MONGODB_DATABASE: beaconsproject
 
-      # Kafka
       - image: wurstmeister/zookeeper
       - image: wurstmeister/kafka
         environment:
@@ -21,7 +18,7 @@ jobs:
           KAFKA_PORT: 9092
           KAFKA_ZOOKEEPER_CONNECT: localhost:2181
           KAFKA_CREATE_TOPICS: "auth:1:1,client:1:1,beacon:1:1,content:1:1,logger:1:1"
-
+    
     environment:
       PRODUCTION: false
       PROJECT_NAME: beaconsprojet
@@ -49,15 +46,68 @@ jobs:
       KAFKA_ACTION_LOGIN: login
       KAFKA_ACTION_LOGOUT: logout
       JWT_KEY: beaconsproject
-
+  
     steps:
       - checkout
+      - setup_remote_docker
+      # Install Docker client to enable running commands on the remote Docker,
+      # set up above.
+      - run:
+        name: Install Docker client
+        command: |
+          set -x
+          if [ ! -f docker-17.03.0-ce.tgz ]; then
+            curl -sLO https://download.docker.com/linux/static/stable/x86_64/docker-17.03.0-ce.tgz
+          fi
+          tar -xz -C /tmp -f docker-17.03.0-ce.tgz
+          mv /tmp/docker/* /usr/bin
+      - run: set > ".env"
+      - run: cat .env
       - run: npm install
-      - run: npm run install
-      - run: npm test
+      - run: npm run build
+
+  test-back:
+    docker:
+      - image: cypress/base
+
+    steps:
+      - run: npm run test:back
+
+  test-app:
+    docker:
+      - image: cypress/base
+
+    steps: 
+      - run: npm run test:app
+  
+  test-beaconer:
+    docker:
+      - image: cypress/base
+    
+    steps:
+      - run: npm run test:beaconer
+  
+  deploy-back:
+    steps:
+      - run: echo "$DOCKERHUB_PASS" && echo "$DOCKERHUB_USERNAME"
+
 workflows:
-    build-and-test:
+  version: 2
+  build-test-deploy:
       jobs:
-        - build-and-test
+        - build
+        - test-back:
+            requires:
+              - build
+        - test-app:
+            requires:
+              - build
+        - test-beaconer:
+            requires:
+              - build
+        - deploy-back:
+            requires:
+              - test-back
+        
 
 
