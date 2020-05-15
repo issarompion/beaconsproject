@@ -65,7 +65,7 @@ jobs:
       - run: set > ".env"
       - run: cat .env
       - run: npm install
-      - run: sh scripts/build_back.sh
+      - run: sh scripts/build_back.sh $DOCKERHUB_USERNAME $PROJECT_VERSION $GIT $API_PORT
       - run: npm run build:app
       - run: npm run build:beaconer
 
