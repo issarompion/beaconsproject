@@ -79,7 +79,6 @@ jobs:
 
   test-app:
     docker:
-      - checkout
       - image: cypress/base
 
     steps: 
@@ -88,7 +87,6 @@ jobs:
   
   test-beaconer:
     docker:
-      - checkout
       - image: cypress/base
     
     steps:
@@ -97,7 +95,6 @@ jobs:
   
   deploy-back:
     docker:
-      - checkout
       - image: cypress/base
       
     steps:
