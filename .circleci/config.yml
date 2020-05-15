@@ -2,7 +2,7 @@ version: 2.1
 orbs:
   node: circleci/node@1.1.6
 jobs:
-  build:
+  build-back:
     docker:
       - image: circleci/buildpack-deps:stretch
 
@@ -34,7 +34,7 @@ jobs:
       - run: npm install
       - run: ./node_modules/.bin/wait-on http://$API_URL:$API_PORT && npm run cy:run:back
 
-    build-test-app:
+  build-test-app:
     docker:
       - image: cypress/base
 
@@ -43,7 +43,7 @@ jobs:
       - run: npm install
       - run: npm run test:app
   
-  test-beaconer:
+  build-test-beaconer:
     docker:
       - image: cypress/base
     
