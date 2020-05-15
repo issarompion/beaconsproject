@@ -59,7 +59,7 @@ jobs:
 
   deploy-back:
     executor: my-executor
-      steps:
+    steps:
         - checkout
         - run: echo "$DOCKERHUB_PASS" && echo "$DOCKERHUB_USERNAME"
 
