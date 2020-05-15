@@ -79,23 +79,29 @@ jobs:
 
   test-app:
     docker:
+      - checkout
       - image: cypress/base
 
     steps: 
+      - checkout
       - run: npm run test:app
   
   test-beaconer:
     docker:
+      - checkout
       - image: cypress/base
     
     steps:
+      - checkout
       - run: npm run test:beaconer
   
   deploy-back:
     docker:
+      - checkout
       - image: cypress/base
       
     steps:
+      - checkout
       - run: echo "$DOCKERHUB_PASS" && echo "$DOCKERHUB_USERNAME"
 
 workflows:
