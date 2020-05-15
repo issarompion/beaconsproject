@@ -62,7 +62,6 @@ jobs:
             tar -xz -C /tmp -f docker-17.03.0-ce.tgz
             mv /tmp/docker/* /usr/bin
       - run: set > ".env"
-      - run: cat .env
       - run: npm install
       - run: npm run build
 
@@ -90,7 +89,7 @@ jobs:
   deploy-back:
     docker:
       - image: cypress/base
-      
+
     steps:
       - run: echo "$DOCKERHUB_PASS" && echo "$DOCKERHUB_USERNAME"
 
