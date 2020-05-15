@@ -46,6 +46,7 @@ jobs:
       KAFKA_ACTION_LOGIN: login
       KAFKA_ACTION_LOGOUT: logout
       JWT_KEY: beaconsproject
+      DOCKERHUB_USERNAME: irompion
   
     steps:
       - checkout
