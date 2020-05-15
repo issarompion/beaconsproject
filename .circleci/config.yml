@@ -88,6 +88,9 @@ jobs:
       - run: npm run test:beaconer
   
   deploy-back:
+    docker:
+      - image: cypress/base
+      
     steps:
       - run: echo "$DOCKERHUB_PASS" && echo "$DOCKERHUB_USERNAME"
 
