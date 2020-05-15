@@ -65,14 +65,17 @@ jobs:
       - run: set > ".env"
       - run: cat .env
       - run: npm install
-      - run: npm run build
+      - run: sh scripts/build_back.sh
+      - run: npm run build:app
+      - run: npm run build:beaconer
 
   test-back:
     docker:
       - image: cypress/base
 
     steps:
-      - run: npm run test:back
+      - run: sh scripts/run_back.sh $DOCKERHUB_USERNAME $PROJECT_VERSION $API_PORT
+      - run: ./node_modules/.bin/wait-on http://$API_URL:$API_PORT && npm run cy:run:back
 
   test-app:
     docker:

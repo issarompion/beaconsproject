@@ -5,6 +5,7 @@ ARG GIT
 ARG API_PORT
 
 RUN git clone ${GIT} /app
+COPY .env /app/.env
 
 USER root
 WORKDIR /app/back

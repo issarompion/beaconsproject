@@ -3,33 +3,15 @@
   "version": "1.0.0",
   "description": "Beacon management application",
   "scripts": {
-    "build":"npm run build:back && npm run build:app && npm run build:beaconer",
-    "build:back":"npm run build:webserver && npm run build:client && npm run build:beacon && npm run build:content && npm run build:logger",
-    "build:app":"cd app && npm install",
-    "build:beaconer":"cd beaconer && npm install",
+    "build:app": "cd app && npm install",
+    "build:beaconer": "cd beaconer && npm install",
     "cy:open": "cypress open",
-    "test": "npm run test:back && npm run test:app && npm run test:beaconer",
-    "start:app": "npm run start:auth && npm run start:client && npm run start:beacon && npm run start:content && npm run start:webserver",
     "cy:run:app": "cypress run --spec cypress/integration/app/*.ts",
     "start:beaconer": "cd beaconer && npm run start",
     "cy:run:beaconer": "cypress run --spec cypress/integration/beaconer/*.ts",
-    "start:back": "npm run start:webserver && npm run start:client && npm run start:beacon && npm run start:content && npm run start:logger",
     "cy:run:back": "cypress run --spec cypress/integration/back/*.ts",
-    "test:back": "./node_modules/.bin/start-server-and-test start:back http://localhost:$API_PORT cy:run:back",
     "test:app": "./node_modules/.bin/start-server-and-test start:app http://localhost:4200 cy:run:app",
-    "test:beaconer": "./node_modules/.bin/start-server-and-test start:beaconer http://localhost:4200 cy:run:beaconer",
-    "build:webserver": "docker build -f $(pwd)/back/microservices/webserver/webserver.Dockerfile --tag $(sh scripts/read_env_var.sh DOCKERHUB_USERNAME)/webserver:$(sh scripts/read_env_var.sh PROJECT_VERSION) --build-arg GIT=$(sh scripts/read_env_var.sh GIT) --build-arg API_PORT=$(sh scripts/read_env_var.sh API_PORT) .",
-    "start:webserver": "docker run -d -p $(sh scripts/read_env_var.sh API_PORT):$(sh scripts/read_env_var.sh API_PORT) $(sh scripts/read_env_var.sh DOCKERHUB_USERNAME)/webserver:$(sh scripts/read_env_var.sh PROJECT_VERSION)",
-    "build:client": "docker build -f $(pwd)/back/microservices/client/client.Dockerfile --tag $(sh scripts/read_env_var.sh DOCKERHUB_USERNAME)/client:$(sh scripts/read_env_var.sh PROJECT_VERSION) --build-arg GIT=$(sh scripts/read_env_var.sh GIT) .",
-    "start:client": "docker run -d $(sh scripts/read_env_var.sh DOCKERHUB_USERNAME)/client:$(sh scripts/read_env_var.sh PROJECT_VERSION)",
-    "build:beacon": "docker build -f $(pwd)/back/microservices/beacon/beacon.Dockerfile --tag $(sh scripts/read_env_var.sh DOCKERHUB_USERNAME)/beacon:$(sh scripts/read_env_var.sh PROJECT_VERSION) --build-arg GIT=$(sh scripts/read_env_var.sh GIT) .",
-    "start:beacon": "docker run -d $(sh scripts/read_env_var.sh DOCKERHUB_USERNAME)/beacon:$(sh scripts/read_env_var.sh PROJECT_VERSION)",
-    "build:content": "docker build -f $(pwd)/back/microservices/content/content.Dockerfile --tag $(sh scripts/read_env_var.sh DOCKERHUB_USERNAME)/content:$(sh scripts/read_env_var.sh PROJECT_VERSION) --build-arg GIT=$(sh scripts/read_env_var.sh GIT) .",
-    "start:content": "docker run -d $(sh scripts/read_env_var.sh DOCKERHUB_USERNAME)/content:$(sh scripts/read_env_var.sh PROJECT_VERSION)",
-    "build:auth": "docker build -f $(pwd)/back/microservices/auth/auth.Dockerfile --tag $(sh scripts/read_env_var.sh DOCKERHUB_USERNAME)/auth:$(sh scripts/read_env_var.sh PROJECT_VERSION) --build-arg GIT=$(sh scripts/read_env_var.sh GIT) .",
-    "start:auth": "docker run -d $(sh scripts/read_env_var.sh DOCKERHUB_USERNAME)/auth:$(sh scripts/read_env_var.sh PROJECT_VERSION)",
-    "build:logger": "docker build -f $(pwd)/back/microservices/logger/logger.Dockerfile --tag $(sh scripts/read_env_var.sh DOCKERHUB_USERNAME)/logger:$(sh scripts/read_env_var.sh PROJECT_VERSION) --build-arg GIT=$(sh scripts/read_env_var.sh GIT) .",
-    "start:logger": "docker run logger -d $(sh scripts/read_env_var.sh DOCKERHUB_USERNAME)/logger:$(sh scripts/read_env_var.sh PROJECT_VERSION)"
+    "test:beaconer": "./node_modules/.bin/start-server-and-test start:beaconer http://localhost:4200 cy:run:beaconer"
   },
   "repository": {
     "type": "git",
@@ -43,7 +25,8 @@
   "homepage": "https://github.com/issarompion/beaconsproject#readme",
   "devDependencies": {
     "cypress": "^4.5.0",
-    "start-server-and-test": "^1.11.0"
+    "start-server-and-test": "^1.11.0",
+    "wait-on": "^5.0.0"
   },
   "dependencies": {
     "typescript": "^3.8.3"
