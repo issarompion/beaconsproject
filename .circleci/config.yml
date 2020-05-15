@@ -39,6 +39,7 @@ jobs:
       - run: npm run build:app
       - run: npm run build:beaconer
       - run: sh scripts/run_back.sh $DOCKERHUB_USERNAME $PROJECT_VERSION $API_PORT
+      - run: docker logs webserver -f
       - run: ./node_modules/.bin/wait-on http://$API_URL:$API_PORT && npm run cy:run:back
       - run: npm run test:app
       - run: npm run test:beaconer
