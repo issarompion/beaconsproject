@@ -82,16 +82,19 @@ workflows:
   build-test-deploy:
       jobs:
         - pre-build
+
         - build-test-back:
             requires:
               - pre-build
+
         - deploy-back:
             requires:
               - build-test-back
 
-        - build-test-app
+        - build-test-app:
             requires:
               - pre-build
-        - build-test-beaconer
+
+        - build-test-beaconer:
             requires:
               - pre-build
