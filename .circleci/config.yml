@@ -1,9 +1,9 @@
 version: 2.1
 executors:
-  my-executor:
+  default:
     docker:
       - image: cypress/base
-    working_directory: ~/project
+    working_directory: ~/beaconsproject
     environment:
       PRODUCTION: false
       PROJECT_NAME: beaconsprojet
@@ -33,7 +33,7 @@ executors:
       JWT_KEY: beaconsproject
 jobs:
   pre-build:
-    executor: my-executor
+    executor: default
     steps:
       - checkout
       - setup_remote_docker
@@ -51,27 +51,27 @@ jobs:
       - run: npm install
 
   build-test-back:
-    executor: my-executor
+    executor: default
     steps:
       - run: sh scripts/build_back.sh $DOCKERHUB_USERNAME $PROJECT_VERSION $GIT $API_PORT
       - run: sh scripts/run_back.sh $DOCKERHUB_USERNAME $PROJECT_VERSION $API_PORT
       - run: ./node_modules/.bin/wait-on http://$API_URL:$API_PORT && npm run cy:run:back
 
   deploy-back:
-    executor: my-executor
+    executor: default
     steps:
         - checkout
         - run: echo "$DOCKERHUB_PASS" && echo "$DOCKERHUB_USERNAME"
 
   build-test-app:
-    executor: my-executor
+    executor: default
     steps: 
       - checkout
       - run: npm build:app
       - run: npm run test:app
   
   build-test-beaconer:
-    executor: my-executor
+    executor: default
     steps:
       - checkout
       - run: npm build:app
