@@ -59,9 +59,9 @@ jobs:
 
   deploy-back:
     executor: default
-      steps:
-        - checkout
-        - run: echo "$DOCKERHUB_PASS" && echo "$DOCKERHUB_USERNAME"
+    steps:
+      - checkout
+      - run: echo "$DOCKERHUB_PASS" && echo "$DOCKERHUB_USERNAME"
   
   build-test-beaconer:
     executor: default
