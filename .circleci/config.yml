@@ -66,7 +66,7 @@ jobs:
             mv /tmp/docker/* /usr/bin
       - run: docker run --name mongodb -p $DB_PORT:$DB_PORT -d mongo
       - run: docker run --name zookeper -p 2181:2181 -d wurstmeister/zookeeper
-      - run: docker run --name -p kafka $KAFKA_PORT:$KAFKA_PORT -d wurstmeister/kafka
+      - run: docker run --name kafka -p $KAFKA_PORT:$KAFKA_PORT -d wurstmeister/kafka
       - run: docker ps
       - run: npm install
       - run: npm run build:back
