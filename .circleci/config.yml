@@ -57,7 +57,7 @@ jobs:
       - run: npm run build:app
       - run: npm run test:app
 
-  deploy-back:
+  deploy-app:
     executor: default
     steps:
       - checkout
@@ -70,6 +70,12 @@ jobs:
       - run: npm install
       - run: npm run build:beaconer
       - run: npm run test:beaconer
+  
+  deploy-beaconer:
+    executor: default
+    steps:
+      - checkout
+      - run: echo "$DOCKERHUB_PASS" && echo "$DOCKERHUB_USERNAME"
 
 workflows:
   version: 2
