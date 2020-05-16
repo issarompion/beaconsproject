@@ -5,14 +5,17 @@
   "scripts": {
     "build:app": "cd app && npm install",
     "build:beaconer": "cd beaconer && npm install",
+    "build:back":"cd back && npm run install:all",
     "cy:open": "cypress open",
     "cy:run:app": "cypress run --spec cypress/integration/app/*.ts",
     "start:app": "cd app && npm run start",
     "start:beaconer": "cd beaconer && npm run start",
+    "start:back":"cd back && npm run start",
     "cy:run:beaconer": "cypress run --spec cypress/integration/beaconer/*.ts",
     "cy:run:back": "cypress run --spec cypress/integration/back/*.ts",
     "test:app": "./node_modules/.bin/start-server-and-test start:app http://localhost:4200 cy:run:app",
-    "test:beaconer": "./node_modules/.bin/start-server-and-test start:beaconer http://localhost:4200 cy:run:beaconer"
+    "test:beaconer": "./node_modules/.bin/start-server-and-test start:beaconer http://localhost:4200 cy:run:beaconer",
+    "test:back":"./node_modules/.bin/start-server-and-test start:back http://localhost:3000 cy:run:back"
   },
   "repository": {
     "type": "git",
@@ -26,8 +29,7 @@
   "homepage": "https://github.com/issarompion/beaconsproject#readme",
   "devDependencies": {
     "cypress": "^4.5.0",
-    "start-server-and-test": "^1.11.0",
-    "wait-on": "^5.0.0"
+    "start-server-and-test": "^1.11.0"
   },
   "dependencies": {
     "typescript": "^3.8.3"

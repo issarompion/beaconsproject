@@ -11,8 +11,13 @@ executors:
       PROJECT_NAME: beaconsprojet
       PROJECT_VERSION: 1.0
       GIT: https://github.com/issarompion/beaconsproject.git
+      DB_PORT: 27017
+      DB_URL: mongodb://localhost
+      DB_NAME: beaconsproject
       API_URL: localhost
       API_PORT: 3000
+      KAFKA_URL: localhost
+      KAFKA_PORT: 9092
       KAFKA_TOPIC_AUTH: auth
       KAFKA_TOPIC_BEACON: beacon
       KAFKA_TOPIC_CLIENT: client
@@ -27,25 +32,49 @@ executors:
       KAFKA_ACTION_CREATE: create
       KAFKA_ACTION_LOGIN: login
       KAFKA_ACTION_LOGOUT: logout
+      JWT_KEY: beaconsproject
+      DOCKERHUB_USERNAME: irompion
 jobs:
   build-test-back:
     executor: default
+    docker:
+      # Mongo
+      - image: mongo
+        environment:
+          MONGODB_DATABASE: beaconsproject
+      # Kafka
+      - image: wurstmeister/zookeeper
+      - image: wurstmeister/kafka
+        environment:
+          KAFKA_ADVERTISED_HOST_NAME: localhost
+          KAFKA_ADVERTISED_PORT: 9092
+          KAFKA_PORT: 9092
+          KAFKA_ZOOKEEPER_CONNECT: localhost:2181
+          KAFKA_CREATE_TOPICS: "auth:1:1,client:1:1,beacon:1:1,content:1:1,logger:1:1"
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm run build:back
+      - run: npm run test:back
+
+  deploy-back:
+    docker:
+      - image: circleci/buildpack-deps:stretch
     steps:
       - checkout
       - setup_remote_docker
-      - run: set > ".env"
-      - run: npm install
+      # - run:
+      #   name: Install Docker client
+      #   command: |
+      #     set -x
+      #     if [ ! -f docker-17.03.0-ce.tgz ]; then
+      #       curl -sLO https://download.docker.com/linux/static/stable/x86_64/docker-17.03.0-ce.tgz
+      #     fi
+      #     tar -xz -C /tmp -f docker-17.03.0-ce.tgz
+      #     mv /tmp/docker/* /usr/bin
+
       - run:
-          name: Install Docker client
-          command: |
-            set -x
-            if [ ! -f docker-17.03.0-ce.tgz ]; then
-              curl -sLO https://download.docker.com/linux/static/stable/x86_64/docker-17.03.0-ce.tgz
-            fi
-            tar -xz -C /tmp -f docker-17.03.0-ce.tgz
-            mv /tmp/docker/* /usr/bin
-      - run:
-          name: build-back
+          name: docker-build-back
           command: |
             docker build -f ./images/auth.Dockerfile --tag $DOCKERHUB_USERNAME/auth:$PROJECT_VERSION --build-arg GIT=$GIT .
             docker build -f ./images/client.Dockerfile --tag $DOCKERHUB_USERNAME/client:$PROJECT_VERSION --build-arg GIT=$GIT .
@@ -53,24 +82,21 @@ jobs:
             docker build -f ./images/content.Dockerfile --tag $DOCKERHUB_USERNAME/content:$PROJECT_VERSION --build-arg GIT=$GIT .
             docker build -f ./images/logger.Dockerfile --tag $DOCKERHUB_USERNAME/logger:$PROJECT_VERSION --build-arg GIT=$GIT .
             docker build -f ./images/webserver.Dockerfile --tag $DOCKERHUB_USERNAME/webserver:$PROJECT_VERSION --build-arg GIT=$GIT --build-arg API_PORT=$API_PORT .
-
+        
       - run:
-          name: start-back
+          name: docker-login
           command: |
-            docker run -d --name auth $DOCKERHUB_USERNAME/auth:$PROJECT_VERSION
-            docker run -d --name client $DOCKERHUB_USERNAME/client:$PROJECT_VERSION
-            docker run -d --name beacon $DOCKERHUB_USERNAME/beacon:$PROJECT_VERSION
-            docker run -d --name content $DOCKERHUB_USERNAME/content:$PROJECT_VERSION
-            docker run -d --name logger $DOCKERHUB_USERNAME/logger:$PROJECT_VERSION
-            docker run -d --name webserver -p $API_PORT:$API_PORT $DOCKERHUB_USERNAME/webserver:$PROJECT_VERSION
-      
-      - run: ./node_modules/.bin/wait-on http://$API_URL:$API_PORT && npm run cy:run:back
-
-  deploy-back:
-    executor: default
-    steps:
-        - checkout
-        - run: echo "$DOCKERHUB_PASS" && echo "$DOCKERHUB_USERNAME"
+            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+    
+      - run:
+          name: docker-push-back
+          command: |
+            docker push auth $DOCKERHUB_USERNAME/auth:$PROJECT_VERSION
+            docker push client $DOCKERHUB_USERNAME/client:$PROJECT_VERSION
+            docker push beacon $DOCKERHUB_USERNAME/beacon:$PROJECT_VERSION
+            docker push content $DOCKERHUB_USERNAME/content:$PROJECT_VERSION
+            docker push logger $DOCKERHUB_USERNAME/logger:$PROJECT_VERSION
+            docker push webserver $DOCKERHUB_USERNAME/webserver:$PROJECT_VERSION
 
   build-test-app:
     executor: default
@@ -81,42 +107,69 @@ jobs:
       - run: npm run test:app
 
   deploy-app:
-    executor: default
+    machine:
+      enabled: true
     steps:
       - checkout
-      - run: echo "$DOCKERHUB_PASS" && echo "$DOCKERHUB_USERNAME"
+      - run: echo "DELOY APP"
+      - run:
+          name: Setup Heroku
+          command: sh scripts/setup_heroku.sh # run a script to set up Heroku
+      - run:
+          name: Deploy Master to Heroku
+          command: |
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
   
   build-test-beaconer:
     executor: default
     steps:
       - checkout
       - run: npm install
+      - run:
+          name: Install ionic and cordova
+          command: |
+            sudo npm install -g ionic cordova yarn
       - run: npm run build:beaconer
       - run: npm run test:beaconer
   
   deploy-beaconer:
-    executor: default
+    macos:
+      xcode: 11.3.0
     steps:
       - checkout
-      - run: echo "$DOCKERHUB_PASS" && echo "$DOCKERHUB_USERNAME"
+      - run: echo "DEPLOY BEACONER"
+      - run: fastlane scan
 
 workflows:
   version: 2
   build-test-deploy:
       jobs:
-
         - build-test-back
 
         - deploy-back:
+            context: beaconsproject-prod
             requires:
               - build-test-back
+            filters:
+              branches:
+                only: master
 
         - build-test-app
+
         - deploy-app:
+            context: beaconsproject-prod
             requires:
               - build-test-app
+            filters:
+                branches:
+                  only: master
 
         - build-test-beaconer
+
         - deploy-beaconer:
+            context: beaconsproject-prod
             requires:
               - build-test-beaconer
+            filters:
+              branches:
+                only: master
