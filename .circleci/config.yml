@@ -38,6 +38,7 @@ jobs:
     executor: default
     steps:
       - checkout
+      - setup_remote_docker
       - run: set > ".env"
       - run: npm install
       - run:
