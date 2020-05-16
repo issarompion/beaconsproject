@@ -56,11 +56,12 @@ jobs:
       - run: npm install
       - run: npm run build:app
       - run: npm run test:app
-      deploy-back:
-        executor: default
-        steps:
-            - checkout
-            - run: echo "$DOCKERHUB_PASS" && echo "$DOCKERHUB_USERNAME"
+
+  deploy-back:
+    executor: default
+      steps:
+        - checkout
+        - run: echo "$DOCKERHUB_PASS" && echo "$DOCKERHUB_USERNAME"
   
   build-test-beaconer:
     executor: default
