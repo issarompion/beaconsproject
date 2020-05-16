@@ -64,7 +64,7 @@ jobs:
             fi
             tar -xz -C /tmp -f docker-17.03.0-ce.tgz
             mv /tmp/docker/* /usr/bin
-      - run: docker run --name -p $DB_PORT:DB_PORT mongodb -d mongo
+      - run: docker run --name -p $DB_PORT:$DB_PORT mongodb -d mongo
       - run: docker run --name -p 2181:2181 zookeper -d wurstmeister/zookeeper
       - run: docker run --name -p $KAFKA_PORT:$KAFKA_PORT kafka -d wurstmeister/kafka
       - run: docker ps
@@ -147,7 +147,6 @@ jobs:
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
-      - checkout
       - run: 
           name: Install gradle
           command: |
