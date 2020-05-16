@@ -11,5 +11,4 @@ docker run -d --name content $user/content:$tag
 docker run -d --name logger $user/logger:$tag
 docker run -d --name webserver -p $api_port:$api_port $user/webserver:$tag
 
-# sh scripts/run_back.sh $DOCKERHUB_USERNAME $PROJECT_VERSION $API_PORT
-# docker rm -f webserver logger content beacon client auth
+# sh scripts/run_back.sh $DOCKERHUB_USERNAME $PROJECT_VERSION $GIT $API_PORT
