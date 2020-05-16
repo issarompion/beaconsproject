@@ -135,7 +135,7 @@ jobs:
     steps:
       - checkout
       - run: 
-          name: "Install gradle"
+          name: Install gradle
           command: |
             wget https://services.gradle.org/distributions/gradle-4.0.2-bin.zip -P /tmp
             sudo unzip -d /opt/gradle /tmp/gradle-*.zip
@@ -143,15 +143,15 @@ jobs:
             echo 'export PATH=$PATH:/opt/gradle/gradle-4.0.2/bin' >> $BASH_ENV
             source $BASH_ENV
       - run:
-          name: "Install ionic and cordova"
+          name: Install ionic and cordova
           command: |
-            sudo npm install -g ionic cordova yarn
+            sudo npm install -g ionic cordova
       - run:
-          name: "Install npm packages"
+          name: Install npm packages
           command: |
             yarn install
       - run:
-          name: "Install Cordova plugins and add android platform"
+          name: Install Cordova plugins and add android platform
           command: |
             ionic cordova platform add android --noresources
             ionic config set -g telemetry true
