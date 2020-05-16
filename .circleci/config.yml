@@ -153,7 +153,9 @@ workflows:
               - build-test-back
             filters:
               branches:
-                only: master
+                only:
+                  - master
+                  - circleci-deploy-setup
 
         - build-test-app
 
@@ -163,7 +165,9 @@ workflows:
               - build-test-app
             filters:
                 branches:
-                  only: master
+                  only:
+                    - master
+                    - circleci-deploy-setup
 
         - build-test-beaconer
 
@@ -173,4 +177,6 @@ workflows:
               - build-test-beaconer
             filters:
               branches:
-                only: master
+                only: 
+                  - master
+                  - circleci-deploy-setup
