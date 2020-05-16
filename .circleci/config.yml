@@ -38,6 +38,7 @@ jobs:
   build-test-back:
     executor: default
     docker:
+      - image: cypress/base
       # Mongo
       - image: mongo
         environment:
@@ -49,7 +50,7 @@ jobs:
           KAFKA_ADVERTISED_HOST_NAME: localhost
           KAFKA_ADVERTISED_PORT: 9092
           KAFKA_PORT: 9092
-          KAFKA_ZOOKEEPER_CONNECT: localhost:2181
+          KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
           KAFKA_CREATE_TOPICS: "auth:1:1,client:1:1,beacon:1:1,content:1:1,logger:1:1"
     steps:
       - checkout
@@ -128,7 +129,7 @@ jobs:
       - run:
           name: Install ionic and cordova
           command: |
-            sudo npm install -g ionic cordova yarn
+            npm install -g ionic cordova yarn
       - run: npm run build:beaconer
       - run: npm run test:beaconer
   
