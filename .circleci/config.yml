@@ -56,14 +56,14 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-        name: Install Docker client
-        command: |
-          set -x
-          if [ ! -f docker-17.03.0-ce.tgz ]; then
-            curl -sLO https://download.docker.com/linux/static/stable/x86_64/docker-17.03.0-ce.tgz
-          fi
-          tar -xz -C /tmp -f docker-17.03.0-ce.tgz
-          mv /tmp/docker/* /usr/bin
+          name: Install Docker client
+          command: |
+            set -x
+            if [ ! -f docker-17.03.0-ce.tgz ]; then
+              curl -sLO https://download.docker.com/linux/static/stable/x86_64/docker-17.03.0-ce.tgz
+            fi
+            tar -xz -C /tmp -f docker-17.03.0-ce.tgz
+            mv /tmp/docker/* /usr/bin
       - run: docker run --name -p $DB_PORT:DB_PORT mongodb -d mongo
       - run: docker run --name -p 2181:2181 zookeper -d wurstmeister/zookeeper
       - run: docker run --name -p $KAFKA_PORT:$KAFKA_PORT kafka -d wurstmeister/kafka
