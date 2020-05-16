@@ -50,7 +50,7 @@ jobs:
           KAFKA_ADVERTISED_HOST_NAME: localhost
           KAFKA_ADVERTISED_PORT: 9092
           KAFKA_PORT: 9092
-          KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+          KAFKA_ZOOKEEPER_CONNECT: localhost:2181
           KAFKA_CREATE_TOPICS: "auth:1:1,client:1:1,beacon:1:1,content:1:1,logger:1:1"
     steps:
       - checkout
@@ -143,10 +143,12 @@ jobs:
   deploy-beaconer:
     docker:
       - image: circleci/android:api-28-node
-    working_directory: ~/beaconsproject/beaconer
+    working_directory: ~/beaconsproject
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
+      - run: checkout
+      - run: cd beaconer
       - run: 
           name: Install gradle
           command: |
