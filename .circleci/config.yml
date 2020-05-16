@@ -103,6 +103,7 @@ jobs:
   deploy-app:
     machine:
       enabled: true
+    working_directory: ~/beaconsproject
     steps:
       - checkout
       - run:
@@ -121,7 +122,7 @@ jobs:
       - run:
           name: Install ionic and cordova
           command: |
-            npm install -g ionic cordova yarn
+            npm install -g ionic cordova
       - run: npm run build:beaconer
       - run: npm run test:beaconer
   
@@ -171,7 +172,7 @@ workflows:
         - build-test-back
 
         - deploy-back:
-            context: beaconsproject-prod
+            # context: beaconsproject-prod
             requires:
               - build-test-back
             filters:
@@ -183,7 +184,6 @@ workflows:
         - build-test-app
 
         - deploy-app:
-            context: beaconsproject-prod
             requires:
               - build-test-app
             filters:
@@ -195,7 +195,6 @@ workflows:
         - build-test-beaconer
 
         - deploy-beaconer:
-            context: beaconsproject-prod
             requires:
               - build-test-beaconer
             filters:
