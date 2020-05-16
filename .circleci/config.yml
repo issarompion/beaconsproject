@@ -11,6 +11,8 @@ executors:
       PROJECT_NAME: beaconsprojet
       PROJECT_VERSION: 1.0
       GIT: https://github.com/issarompion/beaconsproject.git
+      API_URL: localhost
+      API_PORT: 3000
       KAFKA_TOPIC_AUTH: auth
       KAFKA_TOPIC_BEACON: beacon
       KAFKA_TOPIC_CLIENT: client
@@ -25,7 +27,6 @@ executors:
       KAFKA_ACTION_CREATE: create
       KAFKA_ACTION_LOGIN: login
       KAFKA_ACTION_LOGOUT: logout
-      JWT_KEY: beaconsproject
 jobs:
   build-test-back:
     executor: default
