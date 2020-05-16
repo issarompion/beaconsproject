@@ -41,7 +41,7 @@ jobs:
       - run: set > ".env"
       - run: npm install && echo ls
       - run: echo 'export PATH=/foo/bin:$PATH' >> $BASH_ENV
-      - run: chmod +x ./scripts/build_back.sh && chmod +x ./scripts/run_back.sh
+      - run: chmod +x build_back.sh && chmod +x ./scripts/run_back.sh
       - run: ./scripts/build_back.sh $DOCKERHUB_USERNAME $PROJECT_VERSION $GIT $API_PORT
       - run: ./scripts/run_back.sh $DOCKERHUB_USERNAME $PROJECT_VERSION $API_PORT
       - run: ./node_modules/.bin/wait-on http://$API_URL:$API_PORT && npm run cy:run:back

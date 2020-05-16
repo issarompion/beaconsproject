@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 user=$1
 tag=$2
 git=$3
