@@ -4,6 +4,7 @@ executors:
     docker:
       - image: cypress/base
       - image: circleci/buildpack-deps:stretch
+      - image: circleci/ruby:2.4.1
     working_directory: ~/beaconsproject
     environment:
       PRODUCTION: false
