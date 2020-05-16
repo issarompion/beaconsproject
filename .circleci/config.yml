@@ -70,7 +70,6 @@ jobs:
       - run: docker ps
       - run: npm install
       - run: npm run build:back
-      - run: cd back && npm run start:auth
       - run: npm run test:back
 
   deploy-back:
@@ -147,7 +146,7 @@ jobs:
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
-      - run: checkout
+      - checkout
       - run: cd beaconer
       - run: 
           name: Install gradle
