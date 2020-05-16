@@ -121,11 +121,11 @@ jobs:
       - checkout
       - run:
           name: Setup Heroku
-          command: sh scripts/setup_heroku.sh # run a script to set up Heroku
+          command: sh .circleci/setup_heroku.sh $HEROKU_APP_NAME # run a script to set up Heroku
       - run:
-          name: Deploy Master to Heroku # git subtree push --prefix app https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
+          name: Deploy Master to Heroku # git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
           command: |
-            echo "DELOY APP"
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
   
   build-test-beaconer:
     executor: default
@@ -166,7 +166,7 @@ jobs:
       - run:
           name: Install Cordova plugins and add android platform
           command: |
-            npm run build:android
+            npm run build:beaconer:android
       - run:
           name: "Generate apk"
           command: |

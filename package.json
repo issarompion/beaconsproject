@@ -16,7 +16,9 @@
     "test:app": "./node_modules/.bin/start-server-and-test start:app http://localhost:4200 cy:run:app",
     "test:beaconer": "./node_modules/.bin/start-server-and-test start:beaconer http://localhost:8100 cy:run:beaconer",
     "test:back": "./node_modules/.bin/start-server-and-test start:back http://localhost:3000 cy:run:back",
-    "build:app:android": "cd beaconer && npm run build:android"
+    "build:beaconer:android": "cd beaconer && npm run build:android",
+    "build:beaconer:ios": "cd beaconer && npm run build:ios",
+    "prod:app":"cd app && npm run prod"
   },
   "repository": {
     "type": "git",
@@ -34,5 +36,8 @@
   },
   "dependencies": {
     "typescript": "^3.9.2"
+  },
+  "engines": {
+    "node": "13.3.0"
   }
 }
