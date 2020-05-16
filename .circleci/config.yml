@@ -39,9 +39,18 @@ jobs:
     executor: default
     steps:
       - run: set > ".env"
-      - run: npm install && echo ls
+      - run: npm install
+      - run:
+          name: Install Docker client
+          command: |
+              set -x
+              if [ ! -f docker-17.03.0-ce.tgz ]; then
+                curl -sLO https://download.docker.com/linux/static/stable/x86_64/docker-17.03.0-ce.tgz
+              fi
+              tar -xz -C /tmp -f docker-17.03.0-ce.tgz
+              mv /tmp/docker/* /usr/bin
       - run: echo 'export PATH=/foo/bin:$PATH' >> $BASH_ENV
-      - run: chmod +x build_back.sh && chmod +x ./scripts/run_back.sh
+      - run: chmod +x ./build_back.sh && chmod +x ./scripts/run_back.sh
       - run: ./scripts/build_back.sh $DOCKERHUB_USERNAME $PROJECT_VERSION $GIT $API_PORT
       - run: ./scripts/run_back.sh $DOCKERHUB_USERNAME $PROJECT_VERSION $API_PORT
       - run: ./node_modules/.bin/wait-on http://$API_URL:$API_PORT && npm run cy:run:back
