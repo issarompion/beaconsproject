@@ -142,12 +142,12 @@ jobs:
   deploy-beaconer:
     docker:
       - image: circleci/android:api-28-node
-    working_directory: ~/beaconsproject/beaconer
+    working_directory: ~/beaconsproject
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
       - checkout
-      - run: ls
+      - run: cd beaconer
       - run: npm install
       - run: 
           name: Install gradle
