@@ -41,24 +41,24 @@ jobs:
       - run: set > ".env"
       - run: npm install
       - run:
-        name: build-back
-        command: |
-          docker build -f ./back/microservices/auth/auth.Dockerfile --tag $DOCKERHUB_USERNAME/auth:$PROJECT_VERSION --build-arg GIT=$GIT .
-          docker build -f ./back/microservices/auth/auth.Dockerfile --tag $DOCKERHUB_USERNAME/client:$PROJECT_VERSION --build-arg GIT=$GIT .
-          docker build -f ./back/microservices/auth/auth.Dockerfile --tag $DOCKERHUB_USERNAME/beacon:$PROJECT_VERSION --build-arg GIT=$GIT .
-          docker build -f ./back/microservices/auth/auth.Dockerfile --tag $DOCKERHUB_USERNAME/content:$PROJECT_VERSION --build-arg GIT=$GIT .
-          docker build -f ./back/microservices/auth/auth.Dockerfile --tag $DOCKERHUB_USERNAME/logger:$PROJECT_VERSION --build-arg GIT=$GIT .
-          docker build -f ./back/microservices/auth/auth.Dockerfile --tag $DOCKERHUB_USERNAME/webserver:$PROJECT_VERSION --build-arg GIT=$GIT --build-arg API_PORT=$API_PORT .
+          name: build-back
+          command: |
+            docker build -f ./back/microservices/auth/auth.Dockerfile --tag $DOCKERHUB_USERNAME/auth:$PROJECT_VERSION --build-arg GIT=$GIT .
+            docker build -f ./back/microservices/auth/auth.Dockerfile --tag $DOCKERHUB_USERNAME/client:$PROJECT_VERSION --build-arg GIT=$GIT .
+            docker build -f ./back/microservices/auth/auth.Dockerfile --tag $DOCKERHUB_USERNAME/beacon:$PROJECT_VERSION --build-arg GIT=$GIT .
+            docker build -f ./back/microservices/auth/auth.Dockerfile --tag $DOCKERHUB_USERNAME/content:$PROJECT_VERSION --build-arg GIT=$GIT .
+            docker build -f ./back/microservices/auth/auth.Dockerfile --tag $DOCKERHUB_USERNAME/logger:$PROJECT_VERSION --build-arg GIT=$GIT .
+            docker build -f ./back/microservices/auth/auth.Dockerfile --tag $DOCKERHUB_USERNAME/webserver:$PROJECT_VERSION --build-arg GIT=$GIT --build-arg API_PORT=$API_PORT .
 
       - run:
-        name: start-back
-        command: |
-          docker run -d --name auth $DOCKERHUB_USERNAME/auth:$PROJECT_VERSION
-          docker run -d --name client $DOCKERHUB_USERNAME/client:$PROJECT_VERSION
-          docker run -d --name beacon $DOCKERHUB_USERNAME/beacon:$PROJECT_VERSION
-          docker run -d --name content $DOCKERHUB_USERNAME/content:$PROJECT_VERSION
-          docker run -d --name logger $DOCKERHUB_USERNAME/logger:$PROJECT_VERSION
-          docker run -d --name webserver -p $API_PORT:$API_PORT $DOCKERHUB_USERNAME/webserver:$PROJECT_VERSION
+          name: start-back
+          command: |
+            docker run -d --name auth $DOCKERHUB_USERNAME/auth:$PROJECT_VERSION
+            docker run -d --name client $DOCKERHUB_USERNAME/client:$PROJECT_VERSION
+            docker run -d --name beacon $DOCKERHUB_USERNAME/beacon:$PROJECT_VERSION
+            docker run -d --name content $DOCKERHUB_USERNAME/content:$PROJECT_VERSION
+            docker run -d --name logger $DOCKERHUB_USERNAME/logger:$PROJECT_VERSION
+            docker run -d --name webserver -p $API_PORT:$API_PORT $DOCKERHUB_USERNAME/webserver:$PROJECT_VERSION
       
       - run: ./node_modules/.bin/wait-on http://$API_URL:$API_PORT && npm run cy:run:back
 
