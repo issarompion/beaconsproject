@@ -33,7 +33,7 @@ executors:
       KAFKA_ACTION_LOGIN: login
       KAFKA_ACTION_LOGOUT: logout
       JWT_KEY: beaconsproject
-      DOCKERHUB_USERNAME: irompion
+
 jobs:
   build-test-back:
     executor: default
@@ -56,33 +56,26 @@ jobs:
       - checkout
       - run: npm install
       - run: npm run build:back
+      - run: cd back && npm run start:auth
       - run: npm run test:back
 
   deploy-back:
+    working_directory: ~/beaconsproject
     docker:
       - image: circleci/buildpack-deps:stretch
     steps:
       - checkout
       - setup_remote_docker
-      # - run:
-      #   name: Install Docker client
-      #   command: |
-      #     set -x
-      #     if [ ! -f docker-17.03.0-ce.tgz ]; then
-      #       curl -sLO https://download.docker.com/linux/static/stable/x86_64/docker-17.03.0-ce.tgz
-      #     fi
-      #     tar -xz -C /tmp -f docker-17.03.0-ce.tgz
-      #     mv /tmp/docker/* /usr/bin
-
+      - run: set > ".env"
       - run:
           name: docker-build-back
           command: |
-            docker build -f ./images/auth.Dockerfile --tag $DOCKERHUB_USERNAME/auth:$PROJECT_VERSION --build-arg GIT=$GIT .
-            docker build -f ./images/client.Dockerfile --tag $DOCKERHUB_USERNAME/client:$PROJECT_VERSION --build-arg GIT=$GIT .
-            docker build -f ./images/beacon.Dockerfile --tag $DOCKERHUB_USERNAME/beacon:$PROJECT_VERSION --build-arg GIT=$GIT .
-            docker build -f ./images/content.Dockerfile --tag $DOCKERHUB_USERNAME/content:$PROJECT_VERSION --build-arg GIT=$GIT .
-            docker build -f ./images/logger.Dockerfile --tag $DOCKERHUB_USERNAME/logger:$PROJECT_VERSION --build-arg GIT=$GIT .
-            docker build -f ./images/webserver.Dockerfile --tag $DOCKERHUB_USERNAME/webserver:$PROJECT_VERSION --build-arg GIT=$GIT --build-arg API_PORT=$API_PORT .
+            docker build -f ./back/images/auth.Dockerfile --tag $DOCKERHUB_USERNAME/auth:$PROJECT_VERSION --build-arg GIT=$GIT .
+            docker build -f ./back/images/client.Dockerfile --tag $DOCKERHUB_USERNAME/client:$PROJECT_VERSION --build-arg GIT=$GIT .
+            docker build -f ./back/images/beacon.Dockerfile --tag $DOCKERHUB_USERNAME/beacon:$PROJECT_VERSION --build-arg GIT=$GIT .
+            docker build -f ./back/images/content.Dockerfile --tag $DOCKERHUB_USERNAME/content:$PROJECT_VERSION --build-arg GIT=$GIT .
+            docker build -f ./back/images/logger.Dockerfile --tag $DOCKERHUB_USERNAME/logger:$PROJECT_VERSION --build-arg GIT=$GIT .
+            docker build -f ./back/images/webserver.Dockerfile --tag $DOCKERHUB_USERNAME/webserver:$PROJECT_VERSION --build-arg GIT=$GIT --build-arg API_PORT=$API_PORT .
         
       - run:
           name: docker-login
@@ -112,14 +105,13 @@ jobs:
       enabled: true
     steps:
       - checkout
-      - run: echo "DELOY APP"
       - run:
           name: Setup Heroku
           command: sh scripts/setup_heroku.sh # run a script to set up Heroku
       - run:
-          name: Deploy Master to Heroku
+          name: Deploy Master to Heroku # git subtree push --prefix app https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
           command: |
-            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
+            echo "DELOY APP"
   
   build-test-beaconer:
     executor: default
@@ -134,12 +126,43 @@ jobs:
       - run: npm run test:beaconer
   
   deploy-beaconer:
-    macos:
-      xcode: 11.3.0
+    docker:
+      - image: circleci/android:api-28-node
+    working_directory: ~/beaconsproject/beaconer
+    environment:
+      JVM_OPTS: -Xmx3200m
     steps:
       - checkout
-      - run: echo "DEPLOY BEACONER"
-      - run: fastlane scan
+      - run: 
+          name: "Install gradle"
+          command: |
+            wget https://services.gradle.org/distributions/gradle-4.0.2-bin.zip -P /tmp
+            sudo unzip -d /opt/gradle /tmp/gradle-*.zip
+            echo 'export GRADLE_HOME=/opt/gradle/gradle-4.0.2' >> $BASH_ENV
+            echo 'export PATH=$PATH:/opt/gradle/gradle-4.0.2/bin' >> $BASH_ENV
+            source $BASH_ENV
+      - run:
+          name: "Install ionic and cordova"
+          command: |
+            sudo npm install -g ionic cordova yarn
+      - run:
+          name: "Install npm packages"
+          command: |
+            yarn install
+      - run:
+          name: "Install Cordova plugins and add android platform"
+          command: |
+            ionic cordova platform add android --noresources
+            ionic config set -g telemetry true
+      - run:
+          name: "Generate apk"
+          command: |
+            ionic cordova build android --verbose
+            mkdir -p /tmp/apk
+            cp -r platforms/android/app/build/outputs/apk/debug/app-debug.apk /tmp/apk
+      - store_artifacts:
+          path: /tmp/apk
+          destination: apks
 
 workflows:
   version: 2

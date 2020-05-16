@@ -9,12 +9,12 @@
     "cy:open": "cypress open",
     "cy:run:app": "cypress run --spec cypress/integration/app/*.ts",
     "start:app": "cd app && npm run start",
-    "start:beaconer": "cd beaconer && npm run start",
+    "start:beaconer": "cd beaconer && npm run serve",
     "start:back":"cd back && npm run start",
     "cy:run:beaconer": "cypress run --spec cypress/integration/beaconer/*.ts",
     "cy:run:back": "cypress run --spec cypress/integration/back/*.ts",
     "test:app": "./node_modules/.bin/start-server-and-test start:app http://localhost:4200 cy:run:app",
-    "test:beaconer": "./node_modules/.bin/start-server-and-test start:beaconer http://localhost:4200 cy:run:beaconer",
+    "test:beaconer": "./node_modules/.bin/start-server-and-test start:beaconer http://localhost:8100 cy:run:beaconer",
     "test:back":"./node_modules/.bin/start-server-and-test start:back http://localhost:3000 cy:run:back"
   },
   "repository": {
