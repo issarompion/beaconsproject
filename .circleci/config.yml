@@ -37,6 +37,7 @@ jobs:
   build-test-back:
     executor: default
     steps:
+      - run: checkout
       - run: set > ".env"
       - run: npm install
       - run:
