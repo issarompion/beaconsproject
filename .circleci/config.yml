@@ -89,11 +89,11 @@ workflows:
               - build-test-back
 
         - build-test-app
-          - deploy-app:
+        - deploy-app:
             requires:
-            - build-test-app
+              - build-test-app
 
         - build-test-beaconer
         - deploy-beaconer:
             requires:
-            - build-test-beaconer
+              - build-test-beaconer
