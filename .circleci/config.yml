@@ -38,7 +38,7 @@ jobs:
     steps:
       - run: set > ".env"
       - run: npm install
-      - run: chmod 744 ./scripts/build_back.sh && chmod 744 ./scripts/run_back.sh
+      - run: chmod 744 $(pwd)/scripts/build_back.sh && chmod 744 $(pwd)/scripts/run_back.sh
       - run: sh ./scripts/build_back.sh $DOCKERHUB_USERNAME $PROJECT_VERSION $GIT $API_PORT
       - run: sh ./scripts/run_back.sh $DOCKERHUB_USERNAME $PROJECT_VERSION $API_PORT
       - run: ./node_modules/.bin/wait-on http://$API_URL:$API_PORT && npm run cy:run:back
