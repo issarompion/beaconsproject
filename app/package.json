@@ -6,7 +6,7 @@
     "config": "node set-env.js",
     "start": "npm run config && ng serve",
     "build": "npm run config && ng build",
-    "build:prod": "npm run config && ng build --prod",
+    "build:prod": "npm run config && ng build --aot --prod",
     "prod": "npm run build:prod && http-server dist/app -p $APP_PORT",
     "test": "npm run config && ng test",
     "lint": "ng lint",
