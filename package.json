@@ -5,17 +5,18 @@
   "scripts": {
     "build:app": "cd app && npm install",
     "build:beaconer": "cd beaconer && npm install",
-    "build:back":"cd back && npm run install:all",
+    "build:back": "cd back && npm run install:all",
     "cy:open": "cypress open",
     "cy:run:app": "cypress run --spec cypress/integration/app/*.ts",
     "start:app": "cd app && npm run start",
     "start:beaconer": "cd beaconer && npm run serve",
-    "start:back":"cd back && npm run start",
+    "start:back": "cd back && npm run start",
     "cy:run:beaconer": "cypress run --spec cypress/integration/beaconer/*.ts",
     "cy:run:back": "cypress run --spec cypress/integration/back/*.ts",
     "test:app": "./node_modules/.bin/start-server-and-test start:app http://localhost:4200 cy:run:app",
     "test:beaconer": "./node_modules/.bin/start-server-and-test start:beaconer http://localhost:8100 cy:run:beaconer",
-    "test:back":"./node_modules/.bin/start-server-and-test start:back http://localhost:3000 cy:run:back"
+    "test:back": "./node_modules/.bin/start-server-and-test start:back http://localhost:3000 cy:run:back",
+    "build:app:android": "cd beaconer && npm run build:android"
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,6 @@
     "start-server-and-test": "^1.11.0"
   },
   "dependencies": {
-    "typescript": "^3.8.3"
+    "typescript": "^3.9.2"
   }
 }

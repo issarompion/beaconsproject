@@ -12,8 +12,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "serve": "npm run config && ionic serve --no-open",
-    "prod:ios": "npm run config && ionic cordova prepare ios",
-    "prod:android": "npm run config && ionic cordova prepare ios"
+    "build:ios": "npm run config && ionic cordova platform add ios && ionic cordova build ios --prod",
+    "build:android": "npm run config && ionic cordova platform add android && ionic cordova build --release android"
   },
   "private": true,
   "dependencies": {
@@ -31,6 +31,7 @@
     "@ionic/angular": "^4.11.10",
     "colors": "^1.4.0",
     "com.unarin.cordova.beacon": "^3.8.1",
+    "cordova-android": "^8.1.0",
     "cordova-browser": "6.0.0",
     "cordova-ios": "^5.1.1",
     "cordova-plugin-googlemaps": "^2.6.2",
@@ -92,7 +93,8 @@
     },
     "platforms": [
       "ios",
-      "browser"
+      "browser",
+      "android"
     ]
   }
 }
