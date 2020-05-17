@@ -98,12 +98,12 @@ jobs:
       - run:
           name: docker-push-back
           command: |
-            docker push auth $DOCKERHUB_USERNAME/auth
-            docker push client $DOCKERHUB_USERNAME/client
-            docker push beacon $DOCKERHUB_USERNAME/beacon
-            docker push content $DOCKERHUB_USERNAME/content
-            docker push logger $DOCKERHUB_USERNAME/logger
-            docker push webserver $DOCKERHUB_USERNAME/webserver
+            docker push $DOCKERHUB_USERNAME/auth:$PROJECT_VERSION
+            docker push $DOCKERHUB_USERNAME/client:$PROJECT_VERSION
+            docker push $DOCKERHUB_USERNAME/beacon:$PROJECT_VERSION
+            docker push $DOCKERHUB_USERNAME/content:$PROJECT_VERSION
+            docker push $DOCKERHUB_USERNAME/logger:$PROJECT_VERSION
+            docker push $DOCKERHUB_USERNAME/webserver:$PROJECT_VERSION
 
   build-test-app:
     executor: default
