@@ -1,1 +1,1 @@
-web: npm install -g angular-cli && npm install -g http-server && npm run build:app && npm run prod:app
+web: cd app && yarn && npm run prod

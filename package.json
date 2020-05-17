@@ -17,8 +17,7 @@
     "test:beaconer": "./node_modules/.bin/start-server-and-test start:beaconer http://localhost:8100 cy:run:beaconer",
     "test:back": "./node_modules/.bin/start-server-and-test start:back http://localhost:3000 cy:run:back",
     "build:beaconer:android": "cd beaconer && npm run build:android",
-    "build:beaconer:ios": "cd beaconer && npm run build:ios",
-    "prod:app":"cd app && npm run prod"
+    "build:beaconer:ios": "cd beaconer && npm run build:ios"
   },
   "repository": {
     "type": "git",
