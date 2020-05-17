@@ -1,1 +1,1 @@
-web: cd app && npm install && npm run prod
+web: npm run prod:app
