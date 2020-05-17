@@ -12,8 +12,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "serve": "npm run config && ionic serve --no-open",
-    "prod:ios": "npm run config && ionic cordova prepare ios",
-    "prod:android": "npm run config && ionic cordova prepare ios"
+    "build:ios": "npm run config && ionic cordova platform add ios && ionic cordova build ios --prod",
+    "build:android": "npm run config && ionic cordova platform add android && ionic cordova build android --prod --release -- -- --gradleArg=-PcdvMinSdkVersion=20"
   },
   "private": true,
   "dependencies": {
@@ -31,6 +31,7 @@
     "@ionic/angular": "^4.11.10",
     "colors": "^1.4.0",
     "com.unarin.cordova.beacon": "^3.8.1",
+    "cordova-android": "^8.1.0",
     "cordova-browser": "6.0.0",
     "cordova-ios": "^5.1.1",
     "cordova-plugin-googlemaps": "^2.6.2",
@@ -47,7 +48,7 @@
     "@angular-devkit/build-angular": "~0.801.2",
     "@angular-devkit/core": "~8.1.2",
     "@angular-devkit/schematics": "~8.1.2",
-    "@angular/cli": "~8.1.2",
+    "@angular/cli": "~8.3.13",
     "@angular/compiler": "~8.1.2",
     "@angular/compiler-cli": "~8.1.2",
     "@angular/language-service": "~8.1.2",
@@ -82,17 +83,22 @@
       "cordova-plugin-statusbar": {},
       "cordova-plugin-device": {},
       "cordova-plugin-splashscreen": {},
-      "cordova-plugin-ionic-webview": {},
+      "cordova-plugin-ionic-webview": {
+        "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
+      },
       "cordova-plugin-ionic-keyboard": {},
       "com.unarin.cordova.beacon": {},
       "cordova-plugin-googlemaps": {
         "LOCATION_WHEN_IN_USE_DESCRIPTION": "This app wants to get your location while this app runs only.",
-        "LOCATION_ALWAYS_USAGE_DESCRIPTION": "This app wants to get your location always, even this app runs in background."
+        "LOCATION_ALWAYS_USAGE_DESCRIPTION": "This app wants to get your location always, even this app runs in background.",
+        "PLAY_SERVICES_VERSION": "15.0.1",
+        "ANDROID_SUPPORT_V4_VERSION": "27.+"
       }
     },
     "platforms": [
       "ios",
-      "browser"
+      "browser",
+      "android"
     ]
   }
 }

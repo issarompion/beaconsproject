@@ -3,33 +3,21 @@
   "version": "1.0.0",
   "description": "Beacon management application",
   "scripts": {
-    "install":"npm run install:back && npm run install:app && npm run install:beaconer",
-    "install:back":"cd back && npm run install:all",
-    "install:app":"cd app && npm install",
-    "install:beaconer":"cd beaconer && npm install",
+    "build:app": "cd app && npm install",
+    "build:beaconer": "cd beaconer && npm install",
+    "build:back": "cd back && npm run install:all",
     "cy:open": "cypress open",
-    "test": "npm run test:back && npm run test:app && npm run test:beaconer",
-    "start:app": "cd app && npm run start",
     "cy:run:app": "cypress run --spec cypress/integration/app/*.ts",
-    "start:beaconer": "cd beaconer && npm run start",
-    "cy:run:beaconer": "cypress run --spec cypress/integration/beaconer/*.ts",
+    "start:app": "cd app && npm run start",
+    "start:beaconer": "cd beaconer && npm run serve",
     "start:back": "cd back && npm run start",
+    "cy:run:beaconer": "cypress run --spec cypress/integration/beaconer/*.ts",
     "cy:run:back": "cypress run --spec cypress/integration/back/*.ts",
-    "test:back": "./node_modules/.bin/start-server-and-test start:back http://localhost:$API_PORT cy:run:back",
     "test:app": "./node_modules/.bin/start-server-and-test start:app http://localhost:4200 cy:run:app",
-    "test:beaconer": "./node_modules/.bin/start-server-and-test start:beaconer http://localhost:4200 cy:run:beaconer",
-    "build:webserver": "docker build -f $(pwd)/back/microservices/webserver/webserver.Dockerfile --tag $PROJECT_NAME/webserver:$PROJECT_VERSION --build-arg GIT=$GIT --build-arg API_PORT=$API_PORT .",
-    "prod:webserver": "docker run --name webserver -d -p $API_PORT:$API_PORT $PROJECT_NAME/webserver:$PROJECT_VERSION",
-    "build:client": "docker build -f $(pwd)/back/microservices/client/client.Dockerfile --tag $PROJECT_NAME/client:$PROJECT_VERSION --build-arg GIT=$GIT .",
-    "prod:client": "docker run --name client -d $PROJECT_NAME/client:$PROJECT_VERSION",
-    "build:beacon": "docker build -f $(pwd)/back/microservices/beacon/beacon.Dockerfile --tag $PROJECT_NAME/beacon:$PROJECT_VERSION --build-arg GIT=$GIT .",
-    "prod:beacon": "docker run --name beacon -d $PROJECT_NAME/beacon:$PROJECT_VERSION",
-    "build:content": "docker build -f $(pwd)/back/microservices/content/content.Dockerfile --tag $PROJECT_NAME/content:$PROJECT_VERSION --build-arg GIT=$GIT .",
-    "prod:content": "docker run --name content -d $PROJECT_NAME/content:$PROJECT_VERSION",
-    "build:auth": "docker build -f $(pwd)/back/microservices/auth/auth.Dockerfile --tag $PROJECT_NAME/auth:$PROJECT_VERSION --build-arg GIT=$GIT .",
-    "prod:auth": "docker run --name auth -d $PROJECT_NAME/auth:$PROJECT_VERSION",
-    "build:logger": "docker build -f $(pwd)/back/microservices/logger/logger.Dockerfile --tag $PROJECT_NAME/logger:$PROJECT_VERSION --build-arg GIT=$GIT .",
-    "prod:logger": "docker run --name logger -d $PROJECT_NAME/logger:$PROJECT_VERSION"
+    "test:beaconer": "./node_modules/.bin/start-server-and-test start:beaconer http://localhost:8100 cy:run:beaconer",
+    "test:back": "./node_modules/.bin/start-server-and-test start:back http://localhost:3000 cy:run:back",
+    "build:beaconer:android": "cd beaconer && npm run build:android",
+    "build:beaconer:ios": "cd beaconer && npm run build:ios"
   },
   "repository": {
     "type": "git",
@@ -46,6 +34,6 @@
     "start-server-and-test": "^1.11.0"
   },
   "dependencies": {
-    "typescript": "^3.8.3"
+    "typescript": "^3.9.2"
   }
 }

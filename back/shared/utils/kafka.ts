@@ -6,7 +6,7 @@ import { BeaconMessage, ClientMessage, AuthMessage, ContentMessage } from "../mo
 
 const clientOptions = () : KafkaClientOptions => {
     let kafkaHost : string = `${ENV.kafka_url}:${ENV.kafka_port}`
-    if(ENV.production){
+    if(ENV.production && ENV.kafka_acess_certificate && ENV.kafka_acess_key && ENV.kafka_ca_certificate){
         return {
             kafkaHost: kafkaHost,
             sslOptions: {
