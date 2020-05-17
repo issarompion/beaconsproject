@@ -121,12 +121,11 @@ jobs:
       - checkout
       - run:
           name: Setup Heroku
-          command: cd app && sh ../.circleci/setup_heroku.sh $HEROKU_APP_NAME # run a script to set up Heroku
+          command: sh .circleci/setup_heroku.sh $HEROKU_APP_NAME # run a script to set up Heroku
       - run:
           name: Deploy Master to Heroku
           command: |
-            cd app 
-            git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git HEAD:master
+            git push --force https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git `git subtree split --prefix web HEAD`:master
             heroku run rake db:migrate
             sleep 5 # sleep for 5 seconds to wait for dynos
             heroku restart
