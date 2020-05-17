@@ -7,10 +7,11 @@
     "start": "npm run config && ng serve",
     "build": "npm run config && ng build",
     "build:prod": "npm run config && ng build --prod",
-    "prod": "npm run build:prod && http-server dist/app -p 80",
+    "prod": "http-server dist/app -p 80",
     "test": "npm run config && ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "heroku-postbuild": "ng build --prod"
   },
   "private": true,
   "dependencies": {
