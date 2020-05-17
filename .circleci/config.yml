@@ -123,10 +123,9 @@ jobs:
           name: Setup Heroku
           command: cd app && sh ../.circleci/setup_heroku.sh $HEROKU_APP_NAME # run a script to set up Heroku
       - run:
-          name: Deploy Master to Heroku # git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
+          name: Deploy Master to Heroku
           command: |
-            cd app && git pull
-            cd app && git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
+            cd app && git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
             cd app && heroku run rake db:migrate
             cd app && sleep 5 # sleep for 5 seconds to wait for dynos
             cd app && heroku restart
