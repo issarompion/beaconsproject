@@ -193,7 +193,6 @@ workflows:
               branches:
                 only:
                   - master
-                  - circleci-deploy-setup
 
         - build-test-app
 
@@ -204,7 +203,6 @@ workflows:
                 branches:
                   only:
                     - master
-                    - circleci-deploy-setup
 
         - build-test-beaconer
 
@@ -215,4 +213,3 @@ workflows:
               branches:
                 only: 
                   - master
-                  - circleci-deploy-setup

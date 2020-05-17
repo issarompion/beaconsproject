@@ -11,7 +11,6 @@ USER root
 WORKDIR /app/back
 
 RUN git pull
-RUN git checkout circleci-deploy-setup
 RUN npm run install:shared
 RUN npm run install:webserver
 WORKDIR /app/back/microservices/webserver

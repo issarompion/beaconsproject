@@ -36,4 +36,14 @@ export const ENV: Environnement = {
 
 };
 
+if(ENV.production &&
+    process.env.KAFKA_CA_CERTIFICATE && 
+    process.env.KAFKA_ACESS_CERTIFICATE &&
+    process.env.KAFKA_ACESS_KEY
+    ){
+    ENV.kafka_acess_key = process.env.KAFKA_ACESS_KEY
+    ENV.kafka_ca_certificate = process.env.KAFKA_CA_CERTIFICATE 
+    ENV.kafka_acess_certificate = process.env.KAFKA_ACESS_CERTIFICATE
+}
+
 console.log(ENV)

@@ -10,7 +10,6 @@ USER root
 WORKDIR /app/back
 
 RUN git pull
-RUN git checkout circleci-deploy-setup
 RUN npm run install:shared
 RUN npm run install:auth
 WORKDIR /app/back/microservices/auth
