@@ -11,7 +11,7 @@
     "test": "npm run config && ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "heroku-postbuild": "ng build --configuration=production"
+    "heroku-postbuild": "npm run config && ng build --configuration=production"
   },
   "private": true,
   "dependencies": {
