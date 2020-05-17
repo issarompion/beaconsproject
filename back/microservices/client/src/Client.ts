@@ -2,8 +2,8 @@ import {IClientDocument} from './document';
 import {ENV,IClient} from "shared";
 import {Schema, model,connect} from 'mongoose';
 
-const url = ENV.db_url+':'+ENV.db_port+'/'+ENV.db_name
-connect(url,{useUnifiedTopology: true, useNewUrlParser: true,})
+
+connect(ENV.db_uri,{useUnifiedTopology: true, useNewUrlParser: true,})
 .then(() => console.log('DB Connected!'))
 .catch(err => {console.error(`DB Connection Error:${err.message}`);});
 

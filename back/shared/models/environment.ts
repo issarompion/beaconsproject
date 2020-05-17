@@ -2,15 +2,12 @@ export interface Environnement {
     production: boolean,
     project_name: string,
 
-    db_url: string,
-    db_port: string,
-    db_name: string,
+    db_uri: string,
 
     api_port: string,
     api_url: string,
 
-    kafka_url: string,
-    kafka_port: string,
+    kafka_uri: string,
     kafka_topic_auth: string,
     kafka_topic_beacon: string,
     kafka_topic_client: string,
@@ -25,9 +22,6 @@ export interface Environnement {
     kafka_action_create: string,
     kafka_action_login: string,
     kafka_action_logout: string,
-    kafka_ca_certificate?:string,
-    kafka_acess_certificate?:string,
-    kafka_acess_key?:string,
 
     jwt_key:string
 }

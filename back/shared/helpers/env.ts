@@ -8,15 +8,12 @@ export const ENV: Environnement = {
     production: (/true/i).test(process.env.PRODUCTION!),
     project_name: process.env.PROJECT_NAME!,
 
-    db_port: process.env.DB_PORT!,
-    db_url: process.env.DB_URL!,
-    db_name: process.env.DB_NAME!,
+    db_uri: process.env.DB_URI!,
 
     api_port: process.env.API_PORT!,
     api_url: process.env.API_URL!,
 
-    kafka_url: process.env.KAFKA_URL!,
-    kafka_port: process.env.KAFKA_PORT!,
+    kafka_uri: process.env.KAFKA_URI!,
     kafka_topic_auth: process.env.KAFKA_TOPIC_AUTH!,
     kafka_topic_beacon: process.env.KAFKA_TOPIC_BEACON!,
     kafka_topic_client: process.env.KAFKA_TOPIC_CLIENT!,
@@ -35,15 +32,5 @@ export const ENV: Environnement = {
     jwt_key:process.env.JWT_KEY!,
 
 };
-
-if(ENV.production &&
-    process.env.KAFKA_CA_CERTIFICATE && 
-    process.env.KAFKA_ACESS_CERTIFICATE &&
-    process.env.KAFKA_ACESS_KEY
-    ){
-    ENV.kafka_acess_key = process.env.KAFKA_ACESS_KEY
-    ENV.kafka_ca_certificate = process.env.KAFKA_CA_CERTIFICATE 
-    ENV.kafka_acess_certificate = process.env.KAFKA_ACESS_CERTIFICATE
-}
 
 console.log(ENV)

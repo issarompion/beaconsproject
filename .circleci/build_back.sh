@@ -1,4 +1,9 @@
 #!/bin/bash
+DOCKERHUB_USERNAME=$1
+PROJECT_VERSION=$2
+GIT=$4
+API_PORT=$4
+
 docker build -f ./back/images/auth.Dockerfile --tag $DOCKERHUB_USERNAME/auth:$PROJECT_VERSION --build-arg GIT=$GIT .
 docker build -f ./back/images/beacon/beacon.Dockerfile --tag $DOCKERHUB_USERNAME/beacon:$PROJECT_VERSION --build-arg GIT=$GIT .
 docker build -f ./back/images/client.Dockerfile --tag $DOCKERHUB_USERNAME/client:$PROJECT_VERSION --build-arg GIT=$GIT .

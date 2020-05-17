@@ -1,0 +1,14 @@
+#!/bin/bash
+DOCKERHUB_USERNAME=$1
+PROJECT_VERSION=$2
+
+docker push $DOCKERHUB_USERNAME/auth:$PROJECT_VERSION
+docker push $DOCKERHUB_USERNAME/client:$PROJECT_VERSION
+docker push $DOCKERHUB_USERNAME/beacon:$PROJECT_VERSION
+docker push $DOCKERHUB_USERNAME/content:$PROJECT_VERSION
+docker push $DOCKERHUB_USERNAME/logger:$PROJECT_VERSION
+docker push $DOCKERHUB_USERNAME/webserver:$PROJECT_VERSION
+
+# how to use
+# source .env
+# sh .circleci/push_back.sh $DOCKERHUB_USERNAME $PROJECT_VERSION
